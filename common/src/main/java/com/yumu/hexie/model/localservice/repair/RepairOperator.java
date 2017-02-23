@@ -29,7 +29,7 @@ public class RepairOperator  extends BaseModel {
     private long userId;
     
 
-    private Long regionId;//汤臣豪园四期区域ID
+    private Long regionId;//汤臣豪园三期区域ID
     private boolean fromWuye = false;
     private double longitude;
     private double latitude;
