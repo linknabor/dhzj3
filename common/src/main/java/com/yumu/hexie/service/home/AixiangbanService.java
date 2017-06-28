@@ -6,7 +6,7 @@ import com.yumu.hexie.model.user.User;
 
 
 /** 
- * <p>项目：汤臣豪园三期</p>
+ * <p>项目：东湖家园</p>
  * <p>模块：到家服务</p>
  * <p>描述：</p>
  * <p>版    权: Copyright (c) 2016</p>
