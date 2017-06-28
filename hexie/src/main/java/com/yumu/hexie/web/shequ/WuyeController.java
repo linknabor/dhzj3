@@ -195,11 +195,13 @@ public class WuyeController extends BaseController {
 	public BaseResult<WechatPayInfo> getPrePayInfo(@ModelAttribute(Constants.USER)User user,
 			@RequestParam(required=false) String billId,@RequestParam(required=false) String stmtId,
 			@RequestParam(required=false) String couponUnit, @RequestParam(required=false) String couponNum,
-			@RequestParam(required=false) String couponId,@RequestParam(required=false) String mianBill,@RequestParam(required=false) String mianAmt)
+			@RequestParam(required=false) String couponId, @RequestParam(required=false) String mianBill,
+			@RequestParam(required=false) String mianAmt, @RequestParam(required=false) String reduceAmt)
 			throws Exception {
 		WechatPayInfo result;
 		try {
-			result = wuyeService.getPrePayInfo(user.getWuyeId(), billId, stmtId, user.getOpenid(), couponUnit, couponNum, couponId,mianBill,mianAmt);
+			result = wuyeService.getPrePayInfo(user.getWuyeId(), billId, stmtId, user.getOpenid(), 
+						couponUnit, couponNum, couponId, mianBill, mianAmt, reduceAmt);
 		} catch (Exception e) {
 			
 			e.printStackTrace();
@@ -297,7 +299,7 @@ public class WuyeController extends BaseController {
 	
 	@Async
 	private void sendMsg(User user){
-		String msg = "您好，欢迎加入东湖家园。您已获得价值10元红包一份。感谢您对东湖家园的支持。";
+		String msg = "您好，欢迎加入慧生活。您已获得价值10元红包一份。感谢您对慧生活的支持。";
 		smsService.sendMsg(user.getId(), user.getTel(), msg, 11, 3);
 	}
 	
@@ -351,10 +353,11 @@ public class WuyeController extends BaseController {
 	@ResponseBody
 	public BaseResult updateCouponStatus(HttpSession session){
 		
-		User user = (User)session.getAttribute(Constants.USER);
-		if (user==null) {
-			return BaseResult.fail("no user .");
+		if (session == null) {
+			return BaseResult.fail("no session info ...");
 		}
+		
+		User user = (User)session.getAttribute(Constants.USER);
 		List<Coupon>list = couponService.findAvaibleCouponForWuye(user.getId());
 		
 		if (list.size()>0) {

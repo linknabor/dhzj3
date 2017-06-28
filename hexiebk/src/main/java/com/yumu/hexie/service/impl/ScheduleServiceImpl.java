@@ -332,7 +332,7 @@ public class ScheduleServiceImpl implements ScheduleService{
 	@Scheduled(cron = "0 0 18 * * ? ")
 	public void executeCoupinTimeoutHintJob() {
 		
-		String msg = "亲爱的邻居，您有amount元的优惠券即将过期，赶紧去“东湖家园”看看吧！";
+		String msg = "亲爱的邻居，您有amount元的优惠券即将过期，赶紧去“慧生活”看看吧！";
 
 		SCHEDULE_LOG.debug("--------------------start executeCouponHintJob-------------------");
 		
@@ -420,7 +420,7 @@ public class ScheduleServiceImpl implements ScheduleService{
 		status.add(ModelConstant.ORDER_STATUS_CONFIRM);
 		
 		Merchant merchant = merchantRepository.findMechantByNameLike("超市");
-		if(merchant == null){
+		if (merchant == null) {
 			return;
 		}
 		long merchantId = merchant.getId();	//超市快购商户ID

@@ -29,8 +29,7 @@ public class WuyeServiceImpl implements WuyeService {
 	@Override
 	public HexieUser bindHouse(String userId, String stmtId, String houseId) {
 		BaseResult<HexieUser> r= WuyeUtil.bindHouse(userId, stmtId, houseId);
-		
-		if ("04".equals(r.getResult())) {
+		if("04".equals(r.getResult())){
 			throw new BizValidateException("当前用户已经认领该房屋!");
 		}
 		if ("05".equals(r.getResult())) {
@@ -80,8 +79,9 @@ public class WuyeServiceImpl implements WuyeService {
 
 	@Override
 	public WechatPayInfo getPrePayInfo(String userId, String billId,
-			String stmtId, String openId, String couponUnit, String couponNum, String couponId,String mianBill,String mianAmt) throws ValidationException {
-		return WuyeUtil.getPrePayInfo(userId, billId, stmtId, openId, couponUnit, couponNum, couponId,mianBill,mianAmt)
+			String stmtId, String openId, String couponUnit, String couponNum, 
+			String couponId,String mianBill,String mianAmt, String reduceAmt) throws ValidationException {
+		return WuyeUtil.getPrePayInfo(userId, billId, stmtId, openId, couponUnit, couponNum, couponId,mianBill,mianAmt, reduceAmt)
 				.getData();
 	}
 
