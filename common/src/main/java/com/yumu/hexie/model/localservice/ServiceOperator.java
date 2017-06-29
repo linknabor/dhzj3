@@ -29,7 +29,7 @@ public class ServiceOperator  extends BaseModel {
     private String openId;//设置用户ID的时候将其匹配
     private long userId;
 
-    private Long regionId;//东湖家园区域ID
+    private Long regionId;//东湖e家园区域ID
     private boolean fromWuye = false;
     private double longitude;
     private double latitude;
