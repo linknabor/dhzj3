@@ -81,69 +81,12 @@ public class CommunityController extends BaseController{
 	public BaseResult<List<Thread>> getThreadList(@ModelAttribute(Constants.USER)User user, @RequestBody Thread thread, 
 				@PathVariable String filter,  @PathVariable int currPage ) throws Exception {
 		
-		Long sect_id = null;
-		try {
-			sect_id = user.getXiaoquId();
-		} catch (Exception e) {
-			
-			return BaseResult.successResult(new ArrayList<Thread>());
-		}
-		
-		log.debug("sect_id is : " + sect_id);
-		log.debug("filter is : " + filter);
-		
-		if ("y".equals(filter) && null == sect_id) {
-			return BaseResult.successResult(new ArrayList<Thread>());
-		}
-		
 		Sort sort = new Sort(Direction.DESC , "stickPriority", "createDate", "createTime");
 		
 		List<Thread>list = new ArrayList<Thread>();
-		
 		Pageable page = new PageRequest(currPage, PAGE_SIZE, sort);
-		
-		if (StringUtil.isEmpty(thread.getThreadCategory())) {
+		list = communityService.getThreadListByUserId(user.getId(), page);
 			
-			//查看本小区的
-			if ("y".equals(filter)) {
-				list = communityService.getThreadList(user.getXiaoquId(), page);
-			}else {
-				list = communityService.getThreadList(page);
-			}
-			
-		}else {
-			
-			//查看本小区的
-			if ("y".equals(filter)) {
-				
-				if ("4".equals(thread.getThreadCategory())) {
-					//二手市场
-					list = communityService.getThreadListByCategory(thread.getThreadCategory(), user.getXiaoquId(), page);
-				
-				}else {
-					//邻里叽歪
-					list = communityService.getThreadListByNewCategory("4", user.getXiaoquId(), page);
-					
-				}
-			
-			}else {
-				
-				if ("4".equals(thread.getThreadCategory())) {
-					//二手市场
-					list = communityService.getThreadListByCategory(thread.getThreadCategory(), page);
-				
-				}else {
-					
-					//邻里叽歪
-					list = communityService.getThreadListByNewCategory("4", page);
-					
-				}
-				
-				
-			}
-			
-		}
-		
 		for (int i = 0; i < list.size(); i++) {
 			
 			Thread td = list.get(i);

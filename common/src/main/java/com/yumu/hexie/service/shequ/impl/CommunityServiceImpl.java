@@ -223,6 +223,21 @@ public class CommunityServiceImpl implements CommunityService {
 
 		return threadRepository.getThreadListByNewCategory(ModelConstant.THREAD_STATUS_NORMAL, category, page);
 	}
+
+	@Override
+	public List<Thread> getThreadListByUserId(String category, long userId,
+			Pageable page) {
+
+		return threadRepository.getThreadListByNewCategory(ModelConstant.THREAD_STATUS_NORMAL, category, page);
+	}
+
+	@Override
+	public List<Thread> getThreadListByUserId(long userId, Pageable page) {
+
+		return threadRepository.findByThreadStatusAndUserId(ModelConstant.THREAD_STATUS_NORMAL, userId, page);
+	}
+	
+	
 	
 	
 }

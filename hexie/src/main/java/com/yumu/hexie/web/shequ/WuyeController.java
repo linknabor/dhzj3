@@ -428,6 +428,10 @@ public class WuyeController extends BaseController {
 		
 		if (session != null) {
 			
+			if (!StringUtil.isEmpty(userId)) {
+				user = userRepository.findOne(Long.valueOf(userId));
+			}
+			
 			if (user == null) {
 				user = new User();
 				user.setCity("上海市");
@@ -447,11 +451,6 @@ public class WuyeController extends BaseController {
 				user.setCountyId(27);
 				user.setWuyeId("130428400000000013");
 				user.setHeadimgurl("http://wx.qlogo.cn/mmopen/ajNVdqHZLLBIY2Jial97RCIIyq0P4L8dhGicoYDlbNXqW5GJytxmkRDFdFlX9GScrsvo7vBuJuaEoMZeiaBPnb6AA/0");
-			}else {
-				if (!StringUtil.isEmpty(userId)) {
-					
-					user = userRepository.findOne(Long.valueOf(userId));
-				}
 			}
 			
 			//TODO set value on redis

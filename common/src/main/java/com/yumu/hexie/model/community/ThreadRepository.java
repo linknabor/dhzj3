@@ -35,5 +35,7 @@ public interface ThreadRepository extends JpaRepository<Thread, Long> {
 	
 	public List<Thread> findByThreadStatusAndUserId(String threadStatus, long userId, Sort sort);
 	
+	public List<Thread> findByThreadStatusAndUserId(String threadStatus, long userId, Pageable page);
+	
 	
 }
