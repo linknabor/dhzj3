@@ -115,4 +115,31 @@ public class OAuthService {
 		}
 		return user;
 	}
+	
+	/**
+	 * 获取 主公众号（承担支付通道的主公众号） 授权TOKEN
+	 * @param code
+	 * @return
+	 */
+	public static AccessTokenOAuth getBindOAuthAccessToken(String code) {
+		String url = GET_ACCESS_TOKEN_OAUTH
+				.replace("APPID", ConstantWeChat.BIND_APPID)
+				.replace("SECRET", ConstantWeChat.BIND_APPSECRET)
+				.replace("CODE", code);
+
+		WechatResponse jsonObject = WeixinUtil.httpsRequest(url, "POST", null, null);
+
+		AccessTokenOAuth accessTokenOAuth = null;
+
+		if (null != jsonObject&&jsonObject.getErrcode() == 0) {
+			accessTokenOAuth = new AccessTokenOAuth();
+			accessTokenOAuth.setAccessToken(jsonObject.getAccess_token());
+			accessTokenOAuth.setExpiresIn(jsonObject.getExpires_in());
+			accessTokenOAuth.setRefreshToken(jsonObject.getRefresh_token());
+			accessTokenOAuth.setOpenid(jsonObject.getOpenid());
+			accessTokenOAuth.setScope(jsonObject.getScope());
+		}
+		return accessTokenOAuth;
+	}
+	
 }

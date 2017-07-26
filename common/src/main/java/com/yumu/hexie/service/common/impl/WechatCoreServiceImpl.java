@@ -262,4 +262,16 @@ public class WechatCoreServiceImpl implements WechatCoreService {
 		return null;
 	}
 
+
+	@Override
+	public String getBindOpenId(String code) {
+		try {
+		    AccessTokenOAuth auth =  OAuthService.getBindOAuthAccessToken(code);
+	        return auth.getOpenid();
+		} catch (Exception e) {
+			processError(e);
+		}
+		return null;
+	}
+
 }

@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.yumu.hexie.common.Constants;
 import com.yumu.hexie.common.util.DateUtil;
 import com.yumu.hexie.common.util.StringUtil;
+import com.yumu.hexie.integration.wechat.constant.ConstantWeChat;
 import com.yumu.hexie.integration.wechat.entity.user.UserWeiXin;
 import com.yumu.hexie.model.localservice.HomeServiceConstant;
 import com.yumu.hexie.model.promotion.coupon.Coupon;
@@ -29,6 +30,7 @@ import com.yumu.hexie.model.user.User;
 import com.yumu.hexie.service.common.GotongService;
 import com.yumu.hexie.service.common.SmsService;
 import com.yumu.hexie.service.common.SystemConfigService;
+import com.yumu.hexie.service.exception.BizValidateException;
 import com.yumu.hexie.service.o2o.OperatorService;
 import com.yumu.hexie.service.shequ.WuyeService;
 import com.yumu.hexie.service.user.CouponService;
@@ -110,7 +112,6 @@ public class UserController extends BaseController{
 		    if(userAccount == null) {
 		        userAccount = userService.getOrSubscibeUserByCode(code);
 		    }
-		    
 			pointService.addZhima(userAccount, 5, "zm-login-"+DateUtil.dtFormat(new Date(),"yyyy-MM-dd")+userAccount.getId());
 			wuyeService.userLogin(userAccount.getOpenid());
 			
@@ -237,4 +238,37 @@ public class UserController extends BaseController{
             return new BaseResult<UserInfo>().success(new UserInfo(user));
         }
     }
+    
+    /**
+     * 绑定主公众号的openid
+     * @param user
+     * @param code
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping(value = "/bindMain/{code}", method = RequestMethod.POST)
+    @ResponseBody
+    public BaseResult<String> bindMain(@ModelAttribute(Constants.USER)User user, @PathVariable String code) throws Exception {
+    	
+    	User currUser = userService.getById(user.getId());
+    	if (currUser == null) {
+    		return new BaseResult<String>().failMsg("user does not exist !");
+		}
+    	
+    	String openId = "";
+    	if (StringUtil.isNotEmpty(code)) {
+    		try {
+				openId = userService.getBindOrSubscibeUserOpenIdByCode(code);
+			} catch (Exception e) {
+				throw new BizValidateException("get bind openid failed ! ");
+			}
+    	}
+    	
+    	currUser.setOpenid(openId);
+    	currUser.setBindAppId(ConstantWeChat.BIND_APPID);
+    	userService.save(currUser);
+    	return new BaseResult<String>().success("1");
+    	
+    }
+    
 }

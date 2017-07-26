@@ -157,5 +157,14 @@ public class UserServiceImpl implements UserService {
         List<User> users = userRepository.findByShareCode(code);
         return users.size() > 0 ? users.get(0) : null;
     }
+	@Override
+	public String getBindOrSubscibeUserOpenIdByCode(String code) {
+		
+		String openid = wechatCoreService.getBindOpenId(code);
+		if(StringUtil.isEmpty(openid)) {
+            throw new BizValidateException("微信信息不正确");
+        }
+		return openid;
+	}
 
 }

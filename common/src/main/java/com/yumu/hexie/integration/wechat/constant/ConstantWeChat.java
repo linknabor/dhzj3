@@ -1,5 +1,6 @@
 package com.yumu.hexie.integration.wechat.constant;
 
+import com.qiniu.api.config.Config;
 import com.yumu.hexie.common.util.ConfigUtil;
 
 /**
@@ -23,6 +24,15 @@ public class ConstantWeChat {
 	 */
 	public static String APPSECRET = ConfigUtil.get("appSecret");
 	
+	/**
+	 *	绑定公众号的APPID 
+	 */
+	public static String BIND_APPID = ConfigUtil.get("bindAppId");
+	
+	/**
+	 * 绑定公众号的appSecret
+	 */
+	public static String BIND_APPSECRET = ConfigUtil.get("bindAppSecret");
 
 	public static String MAIN_SERVER = ConfigUtil.get("mainServer");
 	

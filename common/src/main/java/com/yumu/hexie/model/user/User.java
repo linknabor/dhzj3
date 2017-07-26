@@ -65,6 +65,8 @@ public class User extends BaseModel{
 	private int zhima;
 	private int lvdou;
 	private Integer couponCount;
+	private String bindAppId;
+	private String bindOpenId;
 	
 	private String shareCode;
 	
@@ -366,6 +368,22 @@ public class User extends BaseModel{
 
 	public void setNewRegiste(boolean isNewRegiste) {
 		this.newRegiste = isNewRegiste;
+	}
+
+	public String getBindAppId() {
+		return bindAppId;
+	}
+
+	public void setBindAppId(String bindAppId) {
+		this.bindAppId = bindAppId;
+	}
+
+	public String getBindOpenId() {
+		return bindOpenId;
+	}
+
+	public void setBindOpenId(String bindOpenId) {
+		this.bindOpenId = bindOpenId;
 	}
 
 	
