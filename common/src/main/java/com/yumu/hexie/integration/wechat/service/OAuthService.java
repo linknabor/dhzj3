@@ -122,10 +122,19 @@ public class OAuthService {
 	 * @return
 	 */
 	public static AccessTokenOAuth getBindOAuthAccessToken(String code) {
+		
+		String appId = ConstantWeChat.BIND_APPID;
+		String secret = ConstantWeChat.BIND_APPSECRET;
+		
+		log.error("bindAppId: " + appId);
+		log.error("bindAppSecret: " + secret);
+		
 		String url = GET_ACCESS_TOKEN_OAUTH
 				.replace("APPID", ConstantWeChat.BIND_APPID)
 				.replace("SECRET", ConstantWeChat.BIND_APPSECRET)
 				.replace("CODE", code);
+		
+		log.error("url: " + url);
 
 		WechatResponse jsonObject = WeixinUtil.httpsRequest(url, "POST", null, null);
 
