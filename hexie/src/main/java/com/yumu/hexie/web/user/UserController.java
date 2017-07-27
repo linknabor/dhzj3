@@ -77,7 +77,10 @@ public class UserController extends BaseController{
     public BaseResult<UserInfo> userInfo(HttpSession session,@ModelAttribute(Constants.USER)User user) throws Exception {
         user = userService.getById(user.getId());
         if(user != null){
-            session.setAttribute(Constants.USER, user);
+        	if (StringUtil.isEmpty(user.getOpenid())) {
+    			return new BaseResult<UserInfo>().failCode(BaseResult.NEED_MAIN_LOGIN); 
+			}
+        	session.setAttribute(Constants.USER, user);
             return new BaseResult<UserInfo>().success(new UserInfo(user,operatorService.isOperator(HomeServiceConstant.SERVICE_TYPE_REPAIR,user.getId())));
         } else {
             return new BaseResult<UserInfo>().success(null);
@@ -128,6 +131,10 @@ public class UserController extends BaseController{
 		}
 		if(userAccount == null) {
             return new BaseResult<UserInfo>().failMsg("用户不存在！");
+		}
+		
+		if (StringUtil.isEmpty(userAccount.getBindOpenId())) {
+			return new BaseResult<UserInfo>().failCode(BaseResult.NEED_MAIN_LOGIN); 
 		}
 
         return new BaseResult<UserInfo>().success(new UserInfo(userAccount,
@@ -246,7 +253,7 @@ public class UserController extends BaseController{
      * @return
      * @throws Exception
      */
-    @RequestMapping(value = "/bindMain/{code}", method = RequestMethod.POST)
+    @RequestMapping(value = "/bindWechat/{code}", method = RequestMethod.POST)
     @ResponseBody
     public BaseResult<String> bindMain(@ModelAttribute(Constants.USER)User user, @PathVariable String code) throws Exception {
     	
