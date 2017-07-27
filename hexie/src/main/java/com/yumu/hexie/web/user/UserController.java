@@ -266,7 +266,7 @@ public class UserController extends BaseController{
         	if (StringUtil.isNotEmpty(code)) {
         		try {
     				openId = userService.getBindOrSubscibeUserOpenIdByCode(code);
-    				currUser.setOpenid(openId);
+    				currUser.setBindOpenId(openId);
     	        	currUser.setBindAppId(ConstantWeChat.BIND_APPID);
     	        	userService.save(currUser);
     			} catch (Exception e) {
