@@ -261,20 +261,22 @@ public class UserController extends BaseController{
     	if (currUser == null) {
     		return new BaseResult<String>().failMsg("user does not exist !");
 		}
+    	if (StringUtil.isEmpty(currUser.getBindOpenId())) {
+    		String openId = "";
+        	if (StringUtil.isNotEmpty(code)) {
+        		try {
+    				openId = userService.getBindOrSubscibeUserOpenIdByCode(code);
+    			} catch (Exception e) {
+    				throw new BizValidateException("get bind openid failed ! ");
+    			}
+        	}
+        	
+        	currUser.setOpenid(openId);
+        	currUser.setBindAppId(ConstantWeChat.BIND_APPID);
+        	userService.save(currUser);
+		}
     	
-    	String openId = "";
-    	if (StringUtil.isNotEmpty(code)) {
-    		try {
-				openId = userService.getBindOrSubscibeUserOpenIdByCode(code);
-			} catch (Exception e) {
-				throw new BizValidateException("get bind openid failed ! ");
-			}
-    	}
-    	
-    	currUser.setOpenid(openId);
-    	currUser.setBindAppId(ConstantWeChat.BIND_APPID);
-    	userService.save(currUser);
-    	return new BaseResult<String>().success("1");
+    	return new BaseResult<String>().success("bind succeeded!");
     	
     }
     
