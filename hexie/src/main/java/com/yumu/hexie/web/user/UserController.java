@@ -266,14 +266,14 @@ public class UserController extends BaseController{
         	if (StringUtil.isNotEmpty(code)) {
         		try {
     				openId = userService.getBindOrSubscibeUserOpenIdByCode(code);
+    				currUser.setOpenid(openId);
+    	        	currUser.setBindAppId(ConstantWeChat.BIND_APPID);
+    	        	userService.save(currUser);
     			} catch (Exception e) {
     				throw new BizValidateException("get bind openid failed ! ");
     			}
         	}
         	
-        	currUser.setOpenid(openId);
-        	currUser.setBindAppId(ConstantWeChat.BIND_APPID);
-        	userService.save(currUser);
 		}
     	
     	return new BaseResult<String>().success("bind succeeded!");
