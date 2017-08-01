@@ -1,5 +1,6 @@
 package com.yumu.hexie.web.user;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -37,8 +38,14 @@ public class MessageController extends BaseController {
 	@ResponseBody
 	public BaseResult<List<Message>> messages(@ModelAttribute(Constants.USER)User user, @PathVariable int currentPage)
 			throws Exception {
-		List<Message> message = messageService.queryMessages( currentPage, PAGE_SIZE);
-		return BaseResult.successResult(message);
+		List<Message> message0 = messageService.queryMessages(0, currentPage, PAGE_SIZE);
+		List<Message> message1 = messageService.queryMessages(1, currentPage, PAGE_SIZE);
+		List<Message> message2 = messageService.queryMessages(2, currentPage, PAGE_SIZE);
+		List<List<Message>> totle_message = new ArrayList<List<Message>>();
+		totle_message.add(message0);
+		totle_message.add(message1);
+		totle_message.add(message2);
+		return BaseResult.successResult(totle_message);
 	}
 
 	//消息详情

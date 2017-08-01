@@ -1,5 +1,6 @@
 package com.yumu.hexie.service.user.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import com.yumu.hexie.model.community.Message;
 import com.yumu.hexie.model.community.MessageRepository;
+import com.yumu.hexie.model.community.QueryIds;
 import com.yumu.hexie.model.user.Feedback;
 import com.yumu.hexie.model.user.FeedbackRepository;
 import com.yumu.hexie.service.user.MessageService;
@@ -30,9 +32,22 @@ public class MessageServiceImpl implements MessageService {
 	}
 	
 	@Override
-	public List<Message> queryMessages(int page, int pageSize){
-		
-		return messageRepository.queryMessagesByStatus(new PageRequest(page,pageSize));
+	public List<Message> queryMessages(int msgType, int page, int pageSize){
+//		List<QueryIds> list_ids = messageRepository.queryRegionInfoByregionTypeAndId(type,sect_id);
+//		if(list_ids.size()!=0)
+//		{
+//			QueryIds ids = list_ids.get(0);
+//			List<String> list = new ArrayList<String>();
+//			list.add(ids.getPt_id());
+//			list.add(ids.getCsp_id());
+//			list.add(ids.getZx_id());
+//			list.add(ids.getSect_id());
+//			return messageRepository.queryByregionTypeAndId(type, list, new PageRequest(page,pageSize));
+//		}else
+//		{
+//			return messageRepository.queryMessagesByStatus(new PageRequest(page,pageSize));
+//		}
+		return messageRepository.queryMessagesByStatus(msgType, new PageRequest(page,pageSize));
 	}
 	
 	@Override

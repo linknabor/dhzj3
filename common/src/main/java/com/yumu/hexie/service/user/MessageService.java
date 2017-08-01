@@ -10,7 +10,7 @@ public interface MessageService {
 	public List<Message> queryMessages(int type, long provinceId,long cityId,
 			long countyId,long xiaoquId,int page, int pageSize);
 	
-	public List<Message> queryMessages(int page, int pageSize);
+	public List<Message> queryMessages(int type, int page, int pageSize);
 	
 	public Message findOne(long messageId);
 	

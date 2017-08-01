@@ -85,7 +85,7 @@ public class CommunityController extends BaseController{
 		
 		List<Thread>list = new ArrayList<Thread>();
 		Pageable page = new PageRequest(currPage, PAGE_SIZE, sort);
-		list = communityService.getThreadListByUserId(user.getId(), page);
+		list = communityService.getThreadListByUserId(user.getId(), thread.getThreadCategory(), page);
 			
 		for (int i = 0; i < list.size(); i++) {
 			

@@ -117,6 +117,15 @@ public interface CommunityService {
 	 */
 	public List<Thread> getThreadListByUserId(long userId, Pageable page);
 	
+	/**
+	 * 9.1.获取我的发布,按分类
+	 * @param userSectId	用户ID
+	 * @param sort	排序
+	 * @param page 	分页
+	 * @return
+	 */
+	public List<Thread> getThreadListByUserId(long userId, String category, Pageable page);
+	
 	
 	/**
 	 * 10.获取社区百事通信息
