@@ -161,15 +161,15 @@ public class CommunityController extends BaseController{
 		
 		Long sect_id = null;
 		try {
-			sect_id = user.getXiaoquId();
+			sect_id = user.getSect_id();
 		} catch (Exception e) {
 			
-			return BaseResult.fail("用户没有注册小区。");
+			return BaseResult.fail("用户没有绑定房屋。");
 		}
 		
-		if(sect_id == null){
+		if(sect_id == null || sect_id == 0){
 			
-			return BaseResult.fail("用户没有注册小区。");
+			return BaseResult.fail("用户没有绑定房屋。");
 		}
 		
 		if(thread.getThreadContent().length()>200){

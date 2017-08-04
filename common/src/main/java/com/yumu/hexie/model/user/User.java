@@ -72,7 +72,7 @@ public class User extends BaseModel{
 	
 	private boolean newRegiste = true;
 	private String bind_bit;//是否绑定房屋标识
-	private long sect_id;//绑定小区ID 对应region_info表
+	private long sect_id = 0;//绑定小区ID 对应region_info表
 	public long getCurrentAddrId() {
 		return currentAddrId;
 	}
