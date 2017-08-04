@@ -4,18 +4,19 @@ import javax.persistence.Entity;
 
 import com.yumu.hexie.model.BaseModel;
 
-//资讯
+//区域
 @Entity
 public class RegionInfo extends BaseModel{
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -5165892854588598286L;
+	private static final long serialVersionUID = 6011247541203926850L;
+	
 	private String name;	//区域名称
 	private String db_code;	//
 	private String regionType;	//区域类型
-	private long super_regionId;	//上级ID
+	private long super_regionId;	//上级ID 代表4级（小区、管理中心、物业公司、平台）
+	private long super_regionId2;	//上级ID2
+	private long super_regionId3;	//上级ID3
+	
 	public String getName() {
 		return name;
 	}
@@ -40,5 +41,16 @@ public class RegionInfo extends BaseModel{
 	public void setSuper_regionId(long super_regionId) {
 		this.super_regionId = super_regionId;
 	}
-	
+	public long getSuper_regionId2() {
+		return super_regionId2;
+	}
+	public void setSuper_regionId2(long super_regionId2) {
+		this.super_regionId2 = super_regionId2;
+	}
+	public long getSuper_regionId3() {
+		return super_regionId3;
+	}
+	public void setSuper_regionId3(long super_regionId3) {
+		this.super_regionId3 = super_regionId3;
+	}
 }
