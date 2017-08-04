@@ -38,9 +38,9 @@ public class MessageController extends BaseController {
 	@ResponseBody
 	public BaseResult<List<Message>> messages(@ModelAttribute(Constants.USER)User user, @PathVariable int currentPage)
 			throws Exception {
-		List<Message> message0 = messageService.queryMessages(0, currentPage, PAGE_SIZE);
-		List<Message> message1 = messageService.queryMessages(1, currentPage, PAGE_SIZE);
-		List<Message> message2 = messageService.queryMessages(2, currentPage, PAGE_SIZE);
+		List<Message> message0 = messageService.queryMessages(user.getSect_id(), 0, currentPage, PAGE_SIZE);
+		List<Message> message1 = messageService.queryMessages(user.getSect_id(), 1, currentPage, PAGE_SIZE);
+		List<Message> message2 = messageService.queryMessages(user.getSect_id(), 2, currentPage, PAGE_SIZE);
 		List<List<Message>> totle_message = new ArrayList<List<Message>>();
 		totle_message.add(message0);
 		totle_message.add(message1);
