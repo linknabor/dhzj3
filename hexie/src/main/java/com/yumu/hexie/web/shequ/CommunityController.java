@@ -91,7 +91,7 @@ public class CommunityController extends BaseController{
 			
 			Thread td = list.get(i);
 			String attachmentUrl = td.getAttachmentUrl();
-			
+			td.setUserSectId(user.getSect_id());
 //			if (StringUtil.isEmpty(attachmentUrl)) {
 //				moveImgsFromTencent2Qiniu(td);
 //			}
@@ -158,19 +158,6 @@ public class CommunityController extends BaseController{
 	public BaseResult<String> addThread(HttpSession session, @RequestBody Thread thread) throws Exception{
 		
 		User user = (User)session.getAttribute(Constants.USER);
-		
-		Long sect_id = null;
-		try {
-			sect_id = user.getSect_id();
-		} catch (Exception e) {
-			
-			return BaseResult.fail("用户没有绑定房屋。");
-		}
-		
-		if(sect_id == null || sect_id == 0){
-			
-			return BaseResult.fail("用户没有绑定房屋。");
-		}
 		
 		if(thread.getThreadContent().length()>200){
 			
