@@ -91,7 +91,6 @@ public class CommunityController extends BaseController{
 			
 			Thread td = list.get(i);
 			String attachmentUrl = td.getAttachmentUrl();
-			td.setUserSectId(user.getSect_id());
 //			if (StringUtil.isEmpty(attachmentUrl)) {
 //				moveImgsFromTencent2Qiniu(td);
 //			}
@@ -140,8 +139,11 @@ public class CommunityController extends BaseController{
 		}
 		
 		
-		log.debug("list is : " + list);		
-		return BaseResult.successResult(list);
+		log.debug("list is : " + list);
+		List<Object> totle_list = new ArrayList<Object>();
+		totle_list.add(list);
+		totle_list.add(user.getSect_id());
+		return BaseResult.successResult(totle_list);
 		
 	}
 	
