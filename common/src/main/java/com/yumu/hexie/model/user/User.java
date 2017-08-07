@@ -395,6 +395,10 @@ public class User extends BaseModel{
 	}
 
 	public long getSect_id() {
+		if(StringUtil.isEmpty(sect_id))
+		{
+			sect_id = 0;
+		}
 		return sect_id;
 	}
 
