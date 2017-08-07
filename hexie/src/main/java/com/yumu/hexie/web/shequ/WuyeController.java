@@ -96,7 +96,7 @@ public class WuyeController extends BaseController {
 			if(house.size()==0)
 			{
 				user.setBind_bit("0");
-				user.setSect_id("");
+				user.setSect_id(0);
 				userRepository.save(user);
 			}
 			return BaseResult.successResult("删除房子成功！");

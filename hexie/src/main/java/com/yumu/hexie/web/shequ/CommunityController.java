@@ -82,7 +82,7 @@ public class CommunityController extends BaseController{
 				@PathVariable String filter,  @PathVariable int currPage ) throws Exception {
 		
 		Sort sort = new Sort(Direction.DESC , "stickPriority", "createDate", "createTime");
-		
+		user = userService.getById(user.getId());
 		List<Thread>list = new ArrayList<Thread>();
 		Pageable page = new PageRequest(currPage, PAGE_SIZE, sort);
 		list = communityService.getThreadListByUserId(user.getId(), thread.getThreadCategory(), page);
@@ -91,7 +91,6 @@ public class CommunityController extends BaseController{
 			
 			Thread td = list.get(i);
 			String attachmentUrl = td.getAttachmentUrl();
-			
 //			if (StringUtil.isEmpty(attachmentUrl)) {
 //				moveImgsFromTencent2Qiniu(td);
 //			}
@@ -140,8 +139,11 @@ public class CommunityController extends BaseController{
 		}
 		
 		
-		log.debug("list is : " + list);		
-		return BaseResult.successResult(list);
+		log.debug("list is : " + list);
+		List<Object> totle_list = new ArrayList<Object>();
+		totle_list.add(list);
+		totle_list.add(user.getSect_id());
+		return BaseResult.successResult(totle_list);
 		
 	}
 	
@@ -158,19 +160,6 @@ public class CommunityController extends BaseController{
 	public BaseResult<String> addThread(HttpSession session, @RequestBody Thread thread) throws Exception{
 		
 		User user = (User)session.getAttribute(Constants.USER);
-		
-		Long sect_id = null;
-		try {
-			sect_id = user.getXiaoquId();
-		} catch (Exception e) {
-			
-			return BaseResult.fail("用户没有注册小区。");
-		}
-		
-		if(sect_id == null){
-			
-			return BaseResult.fail("用户没有注册小区。");
-		}
 		
 		if(thread.getThreadContent().length()>200){
 			
