@@ -19,6 +19,7 @@ public class HexieUser implements Serializable {
 	private String email_activie;
 	private String user_tel;
 	private String is_house;//房屋数
+	private long sect_id;//小区ID plat
 	public String getUser_id() {
 		return user_id;
 	}
@@ -67,4 +68,11 @@ public class HexieUser implements Serializable {
 	public void setIs_house(String is_house) {
 		this.is_house = is_house;
 	}
+	public long getSect_id() {
+		return sect_id;
+	}
+	public void setSect_id(long sect_id) {
+		this.sect_id = sect_id;
+	}
+	
 }

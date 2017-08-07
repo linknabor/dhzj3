@@ -42,6 +42,7 @@ import com.yumu.hexie.service.common.SystemConfigService;
 import com.yumu.hexie.service.shequ.WuyeService;
 import com.yumu.hexie.service.user.CouponService;
 import com.yumu.hexie.service.user.PointService;
+import com.yumu.hexie.service.user.UserService;
 import com.yumu.hexie.web.BaseController;
 import com.yumu.hexie.web.BaseResult;
 
@@ -82,7 +83,6 @@ public class WuyeController extends BaseController {
 		}
 	}
 
-
 	@RequestMapping(value = "/hexiehouse/delete/{houseId}", method = RequestMethod.GET)
 	@ResponseBody
 	public BaseResult<List<HexieHouse>> deleteHouse(@ModelAttribute(Constants.USER)User user,@PathVariable String houseId)
@@ -92,6 +92,13 @@ public class WuyeController extends BaseController {
 		}
 		boolean r = wuyeService.deleteHouse(user.getWuyeId(), houseId);
 		if (r) {
+			List<HexieHouse> house = hexiehouses(user).getResult();
+			if(house.size()==0)
+			{
+				user.setBind_bit("0");
+				user.setSect_id(0);
+				userRepository.save(user);
+			}
 			return BaseResult.successResult("删除房子成功！");
 		} else {
 			return BaseResult.fail("删除房子失败！");
@@ -120,6 +127,13 @@ public class WuyeController extends BaseController {
 		if(u != null) {
 			pointService.addZhima(user, 1000, "zhima-house-"+user.getId()+"-"+houseId);
 		}
+		if("1".equals(u.getIs_house()))//绑了房子，则记录
+		{
+			user.setBind_bit("1");
+			user.setSect_id(u.getSect_id());
+			userRepository.save(user);
+		}
+		
 		return BaseResult.successResult(u);
 	}
 	/*****************[END]房产********************/

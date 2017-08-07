@@ -1,5 +1,6 @@
 package com.yumu.hexie.service.user.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -9,6 +10,8 @@ import org.springframework.stereotype.Service;
 
 import com.yumu.hexie.model.community.Message;
 import com.yumu.hexie.model.community.MessageRepository;
+import com.yumu.hexie.model.community.RegionInfo;
+import com.yumu.hexie.model.community.RegionInfoRepository;
 import com.yumu.hexie.model.user.Feedback;
 import com.yumu.hexie.model.user.FeedbackRepository;
 import com.yumu.hexie.service.user.MessageService;
@@ -20,6 +23,8 @@ public class MessageServiceImpl implements MessageService {
 	@Inject
 	private MessageRepository messageRepository;
 	@Inject
+	private RegionInfoRepository regionInfoRepository;
+	@Inject
 	private FeedbackRepository feedbackRepository;
 	@Override
 	public List<Message> queryMessages(int type, long provinceId, long cityId,
@@ -30,9 +35,50 @@ public class MessageServiceImpl implements MessageService {
 	}
 	
 	@Override
-	public List<Message> queryMessages(int page, int pageSize){
+	public List<Message> queryMessages(long sect_id, int msgType, int page, int pageSize){
 		
-		return messageRepository.queryMessagesByStatus(new PageRequest(page,pageSize));
+		List<Long> list = new ArrayList<Long>();
+		List<RegionInfo> regions = null;
+		//1.判断用户是否绑定房屋
+		if(sect_id!=0)//绑定了房屋
+		{
+			regions = regionInfoRepository.findAllById(sect_id);
+			if(regions.size()!=0)
+			{
+				RegionInfo region = regions.get(0);
+				saveList(list, region.getId());
+				saveList(list, region.getSuper_regionId());
+				saveList(list, region.getSuper_regionId2());
+				saveList(list, region.getSuper_regionId3());
+			}
+		}else//未绑定房屋，只能查看平台级用户
+		{
+			regions = regionInfoRepository.queryRegionInfoByRegionType();
+			if(regions.size()!=0)
+			{
+				for (int i = 0; i < regions.size(); i++) {
+					RegionInfo r = regions.get(i);
+					saveList(list, r.getId());
+				}
+			}
+		}
+		
+		if(list.size()>0)
+		{
+			return messageRepository.queryMessagesByStatus(msgType, list, new PageRequest(page,pageSize));
+		}else
+		{
+			return null;
+		}
+		
+	}
+	
+	public void saveList(List<Long> list,long id)
+	{
+		if(id!=0)
+		{
+			list.add(id);
+		}
 	}
 	
 	@Override

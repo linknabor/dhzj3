@@ -3,6 +3,7 @@
  */
 package com.yumu.hexie.service.shequ.impl;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -239,8 +240,16 @@ public class CommunityServiceImpl implements CommunityService {
 
 	@Override
 	public List<Thread> getThreadListByUserId(long userId, String category, Pageable page) {
-		
-		return threadRepository.findByThreadStatusAndUserIdAndThreadCategory(ModelConstant.THREAD_STATUS_NORMAL, userId, category, page);
+		if("2".equals(category))
+		{
+			List<String> list = new ArrayList<String>();
+			list.add("2");
+			list.add("3");
+			return threadRepository.findByThreadStatusAndUserIdAndThreadCategory(ModelConstant.THREAD_STATUS_NORMAL, userId, list, page);
+		}else
+		{
+			return threadRepository.findByThreadStatusAndUserIdAndThreadCategory(ModelConstant.THREAD_STATUS_NORMAL, userId, category, page);
+		}
 	}
 	
 	
