@@ -38,10 +38,11 @@ public class MessageServiceImpl implements MessageService {
 	public List<Message> queryMessages(long sect_id, int msgType, int page, int pageSize){
 		
 		List<Long> list = new ArrayList<Long>();
-		
-		if(sect_id !=0)
+		List<RegionInfo> regions = null;
+		//1.判断用户是否绑定房屋
+		if(sect_id!=0)//绑定了房屋
 		{
-			List<RegionInfo> regions = regionInfoRepository.findAllById(sect_id);
+			regions = regionInfoRepository.findAllById(sect_id);
 			if(regions.size()!=0)
 			{
 				RegionInfo region = regions.get(0);
@@ -50,9 +51,9 @@ public class MessageServiceImpl implements MessageService {
 				saveList(list, region.getSuper_regionId2());
 				saveList(list, region.getSuper_regionId3());
 			}
-		}else
+		}else//未绑定房屋，只能查看平台级用户
 		{
-			List<RegionInfo> regions = regionInfoRepository.queryRegionInfoByRegionType();
+			regions = regionInfoRepository.queryRegionInfoByRegionType();
 			if(regions.size()!=0)
 			{
 				for (int i = 0; i < regions.size(); i++) {
@@ -61,7 +62,15 @@ public class MessageServiceImpl implements MessageService {
 				}
 			}
 		}
-		return messageRepository.queryMessagesByStatus(msgType, list, new PageRequest(page,pageSize));
+		
+		if(list.size()>0)
+		{
+			return messageRepository.queryMessagesByStatus(msgType, list, new PageRequest(page,pageSize));
+		}else
+		{
+			return null;
+		}
+		
 	}
 	
 	public void saveList(List<Long> list,long id)

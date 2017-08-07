@@ -82,7 +82,7 @@ public class CommunityController extends BaseController{
 				@PathVariable String filter,  @PathVariable int currPage ) throws Exception {
 		
 		Sort sort = new Sort(Direction.DESC , "stickPriority", "createDate", "createTime");
-		
+		user = userService.getById(user.getId());
 		List<Thread>list = new ArrayList<Thread>();
 		Pageable page = new PageRequest(currPage, PAGE_SIZE, sort);
 		list = communityService.getThreadListByUserId(user.getId(), thread.getThreadCategory(), page);
