@@ -69,7 +69,6 @@ public class FundService {
 		map.put("sign", sign);
 		map.remove("key");	//只有生成签名的时候需要将key加入，组建XML时无须使用KEY，不然会报错。
 		String requestXml = MessageUtil.createPayRequestXML(map);
-		//String requestXml = JacksonJsonUtil.mapToXml(map);
 		PrePaymentOrder r = (PrePaymentOrder)WeixinUtil.httpsRequestXml(
 				UNIPAY_URL,  "POST", requestXml,PrePaymentOrder.class);
 		return r; 
