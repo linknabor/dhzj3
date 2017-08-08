@@ -45,13 +45,10 @@ public class MessageController extends BaseController {
 		List<List<Message>> totle_message = new ArrayList<List<Message>>();
 		List<Message> message0 = messageService.queryMessages(user.getSect_id(), 0, currentPage, PAGE_SIZE);
 		totle_message.add(message0);
-		if(user.getSect_id()!=0)
-		{
-			List<Message> message1 = messageService.queryMessages(user.getSect_id(), 1, currentPage, PAGE_SIZE);
-			List<Message> message2 = messageService.queryMessages(user.getSect_id(), 2, currentPage, PAGE_SIZE);
-			totle_message.add(message1);
-			totle_message.add(message2);
-		}
+		List<Message> message1 = messageService.queryMessages(user.getSect_id(), 1, currentPage, PAGE_SIZE);
+		totle_message.add(message1);
+		List<Message> message2 = messageService.queryMessages(user.getSect_id(), 2, currentPage, PAGE_SIZE);
+		totle_message.add(message2);
 		
 		return BaseResult.successResult(totle_message);
 	}
