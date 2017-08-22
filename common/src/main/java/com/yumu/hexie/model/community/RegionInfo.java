@@ -6,17 +6,24 @@ import com.yumu.hexie.model.BaseModel;
 
 //区域
 @Entity
-public class RegionInfo extends BaseModel{
+public class RegionInfo{
 
 	private static final long serialVersionUID = 6011247541203926850L;
 	
+	private String id;	 	//主键id
 	private String name;	//区域名称
 	private String db_code;	//
 	private String regionType;	//区域类型
-	private long super_regionId;	//上级ID 代表4级（小区、管理中心、物业公司、平台）
-	private long super_regionId2;	//上级ID2
-	private long super_regionId3;	//上级ID3
+	private String super_regionId;	//上级ID 代表4级（小区、管理中心、物业公司、平台）
+	private String super_regionId2;	//上级ID2
+	private String super_regionId3;	//上级ID3
 	
+	public String getId() {
+		return id;
+	}
+	public void setId(String id) {
+		this.id = id;
+	}
 	public String getName() {
 		return name;
 	}
@@ -35,22 +42,22 @@ public class RegionInfo extends BaseModel{
 	public void setRegionType(String regionType) {
 		this.regionType = regionType;
 	}
-	public long getSuper_regionId() {
+	public String getSuper_regionId() {
 		return super_regionId;
 	}
-	public void setSuper_regionId(long super_regionId) {
+	public void setSuper_regionId(String super_regionId) {
 		this.super_regionId = super_regionId;
 	}
-	public long getSuper_regionId2() {
+	public String getSuper_regionId2() {
 		return super_regionId2;
 	}
-	public void setSuper_regionId2(long super_regionId2) {
+	public void setSuper_regionId2(String super_regionId2) {
 		this.super_regionId2 = super_regionId2;
 	}
-	public long getSuper_regionId3() {
+	public String getSuper_regionId3() {
 		return super_regionId3;
 	}
-	public void setSuper_regionId3(long super_regionId3) {
+	public void setSuper_regionId3(String super_regionId3) {
 		this.super_regionId3 = super_regionId3;
 	}
 }

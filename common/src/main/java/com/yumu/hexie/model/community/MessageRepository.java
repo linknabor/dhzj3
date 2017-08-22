@@ -22,9 +22,9 @@ public interface MessageRepository extends JpaRepository<Message, Long> {
 	public List<Message> queryMessagesByStatus(int msgType, Pageable pageable);
 
 	@Query("from Message m where m.status = 0 and m.msgType=?1 and m.regionId in(?2) order by m.top desc, m.createDate desc ")
-	public List<Message> queryMessagesByStatus(int msgType, List<Long> id, Pageable pageable);
+	public List<Message> queryMessagesByStatus(int msgType, List<String> id, Pageable pageable);
 	
 	@Query("from Message m where m.status = 0 and m.msgType=?1 and m.regionId =?2 order by m.top desc, m.createDate desc ")
-	public Message queryMessagesByReginId(int msgType, long regionId);
+	public Message queryMessagesByReginId(int msgType, String regionId);
 	
 }

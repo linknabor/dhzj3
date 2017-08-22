@@ -10,11 +10,11 @@ public interface MessageService {
 	public List<Message> queryMessages(int type, long provinceId,long cityId,
 			long countyId,long xiaoquId,int page, int pageSize);
 	
-	public List<Message> queryMessages(long sect_id, int type, int page, int pageSize);
+	public List<Message> queryMessages(String sect_id, int type, int page, int pageSize);
 	
 	public Message findOne(long messageId);
 	
-	public Message findOneByregionId(int msgType, long regionId);
+	public Message findOneByregionId(int msgType, String regionId);
 	
 	public Feedback reply(long userId,String userName,String userHeader,long messageId,String content);
 	
