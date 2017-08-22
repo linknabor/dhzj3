@@ -47,7 +47,7 @@ public class MessageServiceImpl implements MessageService {
 			if(regions.size()!=0)
 			{
 				RegionInfo region = regions.get(0);
-				saveList(list, region.getId());
+				saveList(list, region.getSect_id());
 				saveList(list, region.getSuper_regionId());
 				saveList(list, region.getSuper_regionId2());
 				saveList(list, region.getSuper_regionId3());
@@ -59,7 +59,7 @@ public class MessageServiceImpl implements MessageService {
 			{
 				for (int i = 0; i < regions.size(); i++) {
 					RegionInfo r = regions.get(i);
-					saveList(list, r.getId());
+					saveList(list, r.getSect_id());
 				}
 			}
 		}

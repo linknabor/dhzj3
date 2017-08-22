@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
-public interface RegionInfoRepository extends JpaRepository<RegionInfo, Long> {
+public interface RegionInfoRepository extends JpaRepository<RegionInfo, String> {
 	
 	public List<RegionInfo> findAllById(String id);
 	
