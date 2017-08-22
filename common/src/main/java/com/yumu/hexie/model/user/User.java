@@ -72,7 +72,7 @@ public class User extends BaseModel{
 	
 	private boolean newRegiste = true;
 	private String bind_bit;//是否绑定房屋标识
-	private long sect_id = 0;//绑定小区ID 对应region_info表
+	private String sect_id;//绑定小区ID 对应region_info表
 	public long getCurrentAddrId() {
 		return currentAddrId;
 	}
@@ -394,19 +394,15 @@ public class User extends BaseModel{
 		this.bind_bit = bind_bit;
 	}
 
-	public long getSect_id() {
+	public String getSect_id() {
 		if(StringUtil.isEmpty(sect_id))
 		{
-			sect_id = 0;
+			sect_id = "0";
 		}
 		return sect_id;
 	}
 
-	public void setSect_id(long sect_id) {
+	public void setSect_id(String sect_id) {
 		this.sect_id = sect_id;
 	}
-
-
-	
-	
 }
