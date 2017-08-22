@@ -95,4 +95,9 @@ public class MessageServiceImpl implements MessageService {
 		return feedbackRepository.findAllByArticleId(messageId, new PageRequest(page,pageSize));
 	}
 
+	@Override
+	public Message findOneByregionId(int msgType, long regionId) {
+		return messageRepository.queryMessagesByReginId(msgType, regionId);
+	}
+
 }

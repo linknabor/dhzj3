@@ -62,6 +62,16 @@ public class MessageController extends BaseController {
 		return BaseResult.successResult(message);
 	}
 	
+	//消息详情
+	@RequestMapping(value = "/getmessages", method = RequestMethod.GET)
+	@ResponseBody
+	public BaseResult<Message> getMessageBySectId(@ModelAttribute(Constants.USER) User user)
+				throws Exception {
+		user = userService.getById(user.getId());
+		Message message = messageService.findOneByregionId(4, user.getSect_id());
+		return BaseResult.successResult(message);
+	}
+	
 
 	//feedback
 	@RequestMapping(value = "/feedbacks/{messageId}", method = RequestMethod.GET)

@@ -14,6 +14,8 @@ public interface MessageService {
 	
 	public Message findOne(long messageId);
 	
+	public Message findOneByregionId(int msgType, long regionId);
+	
 	public Feedback reply(long userId,String userName,String userHeader,long messageId,String content);
 	
 	public List<Feedback> queryReplays(long messageId,int page, int pageSize);
