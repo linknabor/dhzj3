@@ -16,7 +16,7 @@ public class Message extends BaseModel{
 	private String content;	//资讯内容
 	private String fromSite;	//来自网站
 	private int regionType;	//区域类型 （0.全部 1.省 2. 市 3. 县  4.小区）
-	private long regionId;	//区域ID
+	private String regionId;	//区域ID
 	private String publishDate;	//发布日期
 	private int status;	//0正常 1失效
 	private boolean top;	//是否置顶
@@ -57,11 +57,11 @@ public class Message extends BaseModel{
 		this.regionType = regionType;
 	}
 
-	public long getRegionId() {
+	public String getRegionId() {
 		return regionId;
 	}
 
-	public void setRegionId(long regionId) {
+	public void setRegionId(String regionId) {
 		this.regionId = regionId;
 	}
 
