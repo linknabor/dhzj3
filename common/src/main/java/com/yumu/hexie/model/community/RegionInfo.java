@@ -6,11 +6,11 @@ import com.yumu.hexie.model.BaseModel;
 
 //区域
 @Entity
-public class RegionInfo{
+public class RegionInfo extends BaseModel{
 
 	private static final long serialVersionUID = 6011247541203926850L;
 	
-	private String id;	 	//主键id
+	private String sect_id;	 	//主键id
 	private String name;	//区域名称
 	private String db_code;	//
 	private String regionType;	//区域类型
@@ -18,11 +18,11 @@ public class RegionInfo{
 	private String super_regionId2;	//上级ID2
 	private String super_regionId3;	//上级ID3
 	
-	public String getId() {
-		return id;
+	public String getSect_id() {
+		return sect_id;
 	}
-	public void setId(String id) {
-		this.id = id;
+	public void setSect_id(String sect_id) {
+		this.sect_id = sect_id;
 	}
 	public String getName() {
 		return name;
