@@ -73,6 +73,11 @@ public class User extends BaseModel{
 	private boolean newRegiste = true;
 	private String bind_bit;//是否绑定房屋标识
 	private String sect_id;//绑定小区ID 对应region_info表
+	
+	private String sect_name;	//绑定房屋所在小区
+	private String cell_id;//绑定房屋的ID
+	private String cell_addr; 
+	
 	public long getCurrentAddrId() {
 		return currentAddrId;
 	}
@@ -405,4 +410,30 @@ public class User extends BaseModel{
 	public void setSect_id(String sect_id) {
 		this.sect_id = sect_id;
 	}
+
+	public String getCell_id() {
+		return cell_id;
+	}
+
+	public void setCell_id(String cell_id) {
+		this.cell_id = cell_id;
+	}
+
+	public String getCell_addr() {
+		return cell_addr;
+	}
+
+	public void setCell_addr(String cell_addr) {
+		this.cell_addr = cell_addr;
+	}
+
+	public String getSect_name() {
+		return sect_name;
+	}
+
+	public void setSect_name(String sect_name) {
+		this.sect_name = sect_name;
+	}
+
+	
 }

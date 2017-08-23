@@ -1,8 +1,11 @@
 package com.yumu.hexie.service.shequ.impl;
 
+import javax.inject.Inject;
 import javax.xml.bind.ValidationException;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.yumu.hexie.integration.wuye.WuyeUtil;
 import com.yumu.hexie.integration.wuye.resp.BaseResult;
@@ -14,12 +17,16 @@ import com.yumu.hexie.integration.wuye.vo.HexieUser;
 import com.yumu.hexie.integration.wuye.vo.PayResult;
 import com.yumu.hexie.integration.wuye.vo.PaymentInfo;
 import com.yumu.hexie.integration.wuye.vo.WechatPayInfo;
+import com.yumu.hexie.model.user.User;
+import com.yumu.hexie.model.user.UserRepository;
 import com.yumu.hexie.service.exception.BizValidateException;
 import com.yumu.hexie.service.shequ.WuyeService;
 
 @Service("wuyeService")
 public class WuyeServiceImpl implements WuyeService {
 
+	@Inject
+	private UserRepository userRepository;
 	
 	@Override
 	public HouseListVO queryHouse(String userId) {
@@ -27,14 +34,35 @@ public class WuyeServiceImpl implements WuyeService {
 	}
 
 	@Override
-	public HexieUser bindHouse(String userId, String stmtId, String houseId) {
-		BaseResult<HexieUser> r= WuyeUtil.bindHouse(userId, stmtId, houseId);
-		if("04".equals(r.getResult())){
+	@Transactional(propagation=Propagation.REQUIRED)//如果有事务，那么加入事务，没有的话新创建一个
+	public HexieUser bindHouse(User user, String stmtId, HexieHouse house) {
+		
+		User currUser = userRepository.findOne(user.getId());
+		
+		BaseResult<HexieUser> r= WuyeUtil.bindHouse(currUser.getWuyeId(), stmtId, house.getMng_cell_id());
+		if ("04".equals(r.getResult())){
 			throw new BizValidateException("当前用户已经认领该房屋!");
 		}
 		if ("05".equals(r.getResult())) {
 			throw new BizValidateException("用户当前绑定房屋与已绑定房屋不属于同个小区，暂不支持此功能。");
 		}
+		if ("01".equals(r.getResult())) {
+			throw new BizValidateException("账户不存在");
+		}
+
+		HexieUser u = r.getData();
+		
+		if("1".equals(u.getIs_house()))//绑了房子，则记录
+		{
+			currUser.setBind_bit("1");
+			currUser.setSect_id(u.getSect_id());
+			currUser.setSect_name(house.getSect_name());
+			currUser.setCell_id(house.getMng_cell_id());
+			currUser.setCell_addr(house.getCell_addr());
+			userRepository.save(currUser);
+			
+		}
+		
 		return r.getData();
 	}
 

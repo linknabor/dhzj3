@@ -10,6 +10,7 @@ import com.yumu.hexie.integration.wuye.vo.HexieUser;
 import com.yumu.hexie.integration.wuye.vo.PayResult;
 import com.yumu.hexie.integration.wuye.vo.PaymentInfo;
 import com.yumu.hexie.integration.wuye.vo.WechatPayInfo;
+import com.yumu.hexie.model.user.User;
 
 public interface WuyeService {
 
@@ -18,7 +19,7 @@ public interface WuyeService {
 	// 1.房产列表
 	public HouseListVO queryHouse(String userId);
 	// 2.绑定房产
-	public HexieUser bindHouse(String userId,String stmtId,String houseId);
+	public HexieUser bindHouse(User user,String stmtId,HexieHouse house);
 	// 3.删除房产
 	public boolean deleteHouse(String userId,String houseId);
 	// 4.根据订单查询房产信息
