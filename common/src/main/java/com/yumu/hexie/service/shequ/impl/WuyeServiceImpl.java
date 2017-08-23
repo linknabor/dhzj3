@@ -34,10 +34,22 @@ public class WuyeServiceImpl implements WuyeService {
 	}
 
 	@Override
-	@Transactional(propagation=Propagation.REQUIRED)//如果有事务，那么加入事务，没有的话新创建一个
+	@Transactional(propagation=Propagation.REQUIRED)
 	public HexieUser bindHouse(User user, String stmtId, HexieHouse house) {
 		
 		User currUser = userRepository.findOne(user.getId());
+		if (currUser.getTotal_bind() == 0) {//从未绑定过的做新增
+			currUser.setTotal_bind(1);
+			currUser.setSect_id(house.getSect_id());
+			currUser.setSect_name(house.getSect_name());
+			currUser.setCell_id(house.getMng_cell_id());
+			currUser.setCell_addr(house.getCell_addr());
+			userRepository.save(currUser);
+		}else {
+			currUser.setTotal_bind((currUser.getTotal_bind()+1));
+			userRepository.save(currUser);
+		}
+		
 		
 		BaseResult<HexieUser> r= WuyeUtil.bindHouse(currUser.getWuyeId(), stmtId, house.getMng_cell_id());
 		if ("04".equals(r.getResult())){
@@ -49,27 +61,35 @@ public class WuyeServiceImpl implements WuyeService {
 		if ("01".equals(r.getResult())) {
 			throw new BizValidateException("账户不存在");
 		}
-
-		HexieUser u = r.getData();
-		
-		if("1".equals(u.getIs_house()))//绑了房子，则记录
-		{
-			currUser.setBind_bit("1");
-			currUser.setSect_id(u.getSect_id());
-			currUser.setSect_name(house.getSect_name());
-			currUser.setCell_id(house.getMng_cell_id());
-			currUser.setCell_addr(house.getCell_addr());
-			userRepository.save(currUser);
-			
-		}
 		
 		return r.getData();
 	}
 
 	@Override
-	public boolean deleteHouse(String userId, String houseId) {
+	@Transactional(propagation=Propagation.REQUIRED)
+	public boolean deleteHouse(User user, String userId, String houseId) {
+		
+		User currUser = userRepository.findOne(user.getId());
+		long curr_bind = currUser.getTotal_bind() - 1;
+		if (curr_bind == 0) {
+			currUser.setSect_id("0");
+			currUser.setSect_name("");
+			currUser.setCell_id("");
+			currUser.setCell_addr("");
+			currUser.setTotal_bind(curr_bind);
+			userRepository.save(currUser);
+		}else {
+			currUser.setTotal_bind(curr_bind);
+			userRepository.save(currUser);
+		}
+		
 		BaseResult<String> r = WuyeUtil.deleteHouse(userId, houseId);
-		return r.isSuccess();
+		boolean isSuccess = r.isSuccess();
+		
+		if (!isSuccess) {
+			throw new BizValidateException("删除房屋失败。");
+		}
+		return isSuccess;
 	}
 
 	@Override

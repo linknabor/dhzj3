@@ -71,9 +71,8 @@ public class User extends BaseModel{
 	private String shareCode;
 	
 	private boolean newRegiste = true;
-	private String bind_bit;//是否绑定房屋标识
+	private long total_bind = 0;	//总共绑定房屋，初始为0
 	private String sect_id;//绑定小区ID 对应region_info表
-	
 	private String sect_name;	//绑定房屋所在小区
 	private String cell_id;//绑定房屋的ID
 	private String cell_addr; 
@@ -391,12 +390,12 @@ public class User extends BaseModel{
 		this.bindOpenId = bindOpenId;
 	}
 
-	public String getBind_bit() {
-		return bind_bit;
+	public long getTotal_bind() {
+		return total_bind;
 	}
 
-	public void setBind_bit(String bind_bit) {
-		this.bind_bit = bind_bit;
+	public void setTotal_bind(long total_bind) {
+		this.total_bind = total_bind;
 	}
 
 	public String getSect_id() {
