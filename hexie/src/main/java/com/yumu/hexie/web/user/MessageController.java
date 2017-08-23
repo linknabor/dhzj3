@@ -70,7 +70,15 @@ public class MessageController extends BaseController {
 				throws Exception {
 		user = userService.getById(user.getId());
 		//查询便民信息
-		Message message = messageService.findOneByregionId(3, user.getSect_id());
+		Message message = new Message();
+		if(!StringUtil.isEmpty(user.getSect_id()) && !"0".equals(user.getSect_id()))
+		{
+			message = messageService.findOneByregionId(3, user.getSect_id(), true);
+		}else
+		{
+			message = messageService.findOneByregionId(3, user.getSect_id(), false);
+		}
+		
 		return BaseResult.successResult(message);
 	}
 	

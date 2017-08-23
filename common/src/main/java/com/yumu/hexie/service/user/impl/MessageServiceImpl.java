@@ -97,8 +97,15 @@ public class MessageServiceImpl implements MessageService {
 	}
 
 	@Override
-	public Message findOneByregionId(int msgType, String regionId) {
-		return messageRepository.queryMessagesByReginId(msgType, regionId);
+	public Message findOneByregionId(int msgType, String regionId, boolean type) {
+		if(type)
+		{
+			return messageRepository.queryMessagesByReginId(msgType, regionId);
+		}else
+		{
+			List<RegionInfo> regions = regionInfoRepository.queryRegionInfoByRegionType();
+			return messageRepository.queryMessagesByReginId(msgType, regions.get(0).getSect_id());
+		}
 	}
 
 }
