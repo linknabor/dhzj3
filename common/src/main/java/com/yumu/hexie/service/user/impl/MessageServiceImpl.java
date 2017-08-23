@@ -8,6 +8,7 @@ import javax.inject.Inject;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import com.yumu.hexie.common.util.StringUtil;
 import com.yumu.hexie.model.community.Message;
 import com.yumu.hexie.model.community.MessageRepository;
 import com.yumu.hexie.model.community.RegionInfo;
@@ -35,18 +36,18 @@ public class MessageServiceImpl implements MessageService {
 	}
 	
 	@Override
-	public List<Message> queryMessages(long sect_id, int msgType, int page, int pageSize){
+	public List<Message> queryMessages(String sect_id, int msgType, int page, int pageSize){
 		
-		List<Long> list = new ArrayList<Long>();
+		List<String> list = new ArrayList<String>();
 		List<RegionInfo> regions = null;
 		//1.判断用户是否绑定房屋
-		if(sect_id!=0)//绑定了房屋
+		if(!StringUtil.isEmpty(sect_id) || !"0".equals(sect_id))//绑定了房屋
 		{
-			regions = regionInfoRepository.findAllById(sect_id);
+			regions = regionInfoRepository.findAllByRegionType(sect_id);
 			if(regions.size()!=0)
 			{
 				RegionInfo region = regions.get(0);
-				saveList(list, region.getId());
+				saveList(list, region.getSect_id());
 				saveList(list, region.getSuper_regionId());
 				saveList(list, region.getSuper_regionId2());
 				saveList(list, region.getSuper_regionId3());
@@ -58,7 +59,7 @@ public class MessageServiceImpl implements MessageService {
 			{
 				for (int i = 0; i < regions.size(); i++) {
 					RegionInfo r = regions.get(i);
-					saveList(list, r.getId());
+					saveList(list, r.getSect_id());
 				}
 			}
 		}
@@ -73,9 +74,9 @@ public class MessageServiceImpl implements MessageService {
 		
 	}
 	
-	public void saveList(List<Long> list,long id)
+	public void saveList(List<String> list,String id)
 	{
-		if(id!=0)
+		if(!StringUtil.isEmpty(id) || !"0".equals(id))
 		{
 			list.add(id);
 		}
@@ -96,7 +97,7 @@ public class MessageServiceImpl implements MessageService {
 	}
 
 	@Override
-	public Message findOneByregionId(int msgType, long regionId) {
+	public Message findOneByregionId(int msgType, String regionId) {
 		return messageRepository.queryMessagesByReginId(msgType, regionId);
 	}
 

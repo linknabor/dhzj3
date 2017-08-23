@@ -79,6 +79,23 @@ public class WuyeController extends BaseController {
 		}
 		HouseListVO listVo = wuyeService.queryHouse(user.getWuyeId());
 		if (listVo != null && listVo.getHou_info() != null) {
+			//如果查到房屋，则说明有绑定房屋，只取其中一套进行绑定
+			HexieHouse house = listVo.getHou_info().get(0);
+			user = userRepository.findOne(user.getId());
+			if(house!=null)
+			{
+				if(!user.getSect_id().equals(house.getSect_id()))
+				{
+					user.setBind_bit("1");
+					user.setSect_id(house.getSect_id());
+					userRepository.save(user);
+				}
+			}else
+			{
+				user.setBind_bit("0");
+				user.setSect_id("0");
+				userRepository.save(user);
+			}
 			return BaseResult.successResult(listVo.getHou_info());
 		} else {
 			return BaseResult.successResult(new ArrayList<HexieHouse>());
@@ -94,13 +111,6 @@ public class WuyeController extends BaseController {
 		}
 		boolean r = wuyeService.deleteHouse(user.getWuyeId(), houseId);
 		if (r) {
-			List<HexieHouse> house = hexiehouses(user).getResult();
-			if(house.size()==0)
-			{
-				user.setBind_bit("0");
-				user.setSect_id(0);
-				userRepository.save(user);
-			}
 			return BaseResult.successResult("删除房子成功！");
 		} else {
 			return BaseResult.fail("删除房子失败！");
@@ -116,8 +126,7 @@ public class WuyeController extends BaseController {
 			//FIXME 后续可调转绑定房子页面
 			return BaseResult.successResult(null);
 		}
-		return BaseResult.successResult(wuyeService.getHouse(user.getWuyeId(),
-				stmtId));
+		return BaseResult.successResult(wuyeService.getHouse(user.getWuyeId(),stmtId));
 	}
 
 	@RequestMapping(value = "/addhexiehouse/{stmtId}/{houseId}", method = RequestMethod.POST)

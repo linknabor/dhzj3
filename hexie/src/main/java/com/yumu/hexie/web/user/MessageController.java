@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.yumu.hexie.common.Constants;
+import com.yumu.hexie.common.util.StringUtil;
 import com.yumu.hexie.model.community.Message;
 import com.yumu.hexie.model.user.Feedback;
 import com.yumu.hexie.model.user.User;
