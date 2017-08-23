@@ -78,7 +78,7 @@ public class AppConfig {
     @Bean
     public EmbeddedServletContainerFactory EmbeddedServletContainerFactory(){
         TomcatEmbeddedServletContainerFactory factory = new TomcatEmbeddedServletContainerFactory();
-        factory.setPort(80);
+        factory.setPort(82);
         factory.addAdditionalTomcatConnectors(createSslConnector());
         return factory;
     }
@@ -91,7 +91,7 @@ public class AppConfig {
         Connector connector = new Connector("org.apache.coyote.http11.Http11NioProtocol");
         Http11NioProtocol protocol = (Http11NioProtocol) connector.getProtocolHandler();
         try {
-            File truststore = new File("F:/keystore/server.jks");
+            File truststore = new File("d:/keystore/server.jks");
             connector.setScheme("https");
             protocol.setSSLEnabled(true);
             connector.setSecure(true);
