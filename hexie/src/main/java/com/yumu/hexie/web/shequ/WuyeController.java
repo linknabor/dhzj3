@@ -79,23 +79,6 @@ public class WuyeController extends BaseController {
 		}
 		HouseListVO listVo = wuyeService.queryHouse(user.getWuyeId());
 		if (listVo != null && listVo.getHou_info() != null) {
-			//如果查到房屋，则说明有绑定房屋，只取其中一套进行绑定
-			HexieHouse house = listVo.getHou_info().get(0);
-			user = userRepository.findOne(user.getId());
-			if(house!=null)
-			{
-				if(!user.getSect_id().equals(house.getSect_id()))
-				{
-					user.setBind_bit("1");
-					user.setSect_id(house.getSect_id());
-					userRepository.save(user);
-				}
-			}else
-			{
-				user.setBind_bit("0");
-				user.setSect_id("0");
-				userRepository.save(user);
-			}
 			return BaseResult.successResult(listVo.getHou_info());
 		} else {
 			return BaseResult.successResult(new ArrayList<HexieHouse>());
@@ -109,7 +92,7 @@ public class WuyeController extends BaseController {
 		if(StringUtil.isEmpty(user.getWuyeId())){
 			return BaseResult.fail("删除房子失败！请重新访问页面并操作！");
 		}
-		boolean r = wuyeService.deleteHouse(user.getWuyeId(), houseId);
+		boolean r = wuyeService.deleteHouse(user, user.getWuyeId(), houseId);
 		if (r) {
 			return BaseResult.successResult("删除房子成功！");
 		} else {
@@ -131,7 +114,6 @@ public class WuyeController extends BaseController {
 
 	@RequestMapping(value = "/addhexiehouse/{stmtId}/{houseId}", method = RequestMethod.POST)
 	@ResponseBody
-	@Transactional(propagation=Propagation.REQUIRED)//如果有事务，那么加入事务，没有的话新创建一个
 	public BaseResult<HexieHouse> addhouses(@ModelAttribute(Constants.USER)User user,
 			@PathVariable String stmtId, @PathVariable String houseId, @RequestBody HexieHouse house) throws Exception {
 		HexieUser u = wuyeService.bindHouse(user, stmtId, house);
