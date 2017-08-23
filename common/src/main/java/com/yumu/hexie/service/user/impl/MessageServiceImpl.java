@@ -41,7 +41,7 @@ public class MessageServiceImpl implements MessageService {
 		List<String> list = new ArrayList<String>();
 		List<RegionInfo> regions = null;
 		//1.判断用户是否绑定房屋
-		if(!StringUtil.isEmpty(sect_id) || !"0".equals(sect_id))//绑定了房屋
+		if(!StringUtil.isEmpty(sect_id) && !"0".equals(sect_id))//绑定了房屋
 		{
 			regions = regionInfoRepository.findAllByRegionType(sect_id);
 			if(regions.size()!=0)
@@ -76,7 +76,7 @@ public class MessageServiceImpl implements MessageService {
 	
 	public void saveList(List<String> list,String id)
 	{
-		if(!StringUtil.isEmpty(id) || !"0".equals(id))
+		if(!StringUtil.isEmpty(id) && !"0".equals(id))
 		{
 			list.add(id);
 		}
