@@ -7,7 +7,8 @@ import org.springframework.data.jpa.repository.Query;
 
 public interface RegionInfoRepository extends JpaRepository<RegionInfo, String> {
 	
-	public List<RegionInfo> findAllById(String id);
+	@Query("from RegionInfo r where r.regionType=3 and r.sect_id=?1")
+	public List<RegionInfo> findAllByRegionType(String sectId);
 	
 	@Query("from RegionInfo r where r.regionType=0")
 	public List<RegionInfo> queryRegionInfoByRegionType();
