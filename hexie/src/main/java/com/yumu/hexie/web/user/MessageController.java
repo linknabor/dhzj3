@@ -69,7 +69,8 @@ public class MessageController extends BaseController {
 	public BaseResult<Message> getMessageBySectId(@ModelAttribute(Constants.USER) User user)
 				throws Exception {
 		user = userService.getById(user.getId());
-		Message message = messageService.findOneByregionId(4, user.getSect_id());
+		//查询便民信息
+		Message message = messageService.findOneByregionId(3, user.getSect_id());
 		return BaseResult.successResult(message);
 	}
 	
