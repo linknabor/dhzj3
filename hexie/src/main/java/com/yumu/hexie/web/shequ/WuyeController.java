@@ -11,8 +11,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -42,7 +45,6 @@ import com.yumu.hexie.service.common.SystemConfigService;
 import com.yumu.hexie.service.shequ.WuyeService;
 import com.yumu.hexie.service.user.CouponService;
 import com.yumu.hexie.service.user.PointService;
-import com.yumu.hexie.service.user.UserService;
 import com.yumu.hexie.web.BaseController;
 import com.yumu.hexie.web.BaseResult;
 
@@ -118,20 +120,14 @@ public class WuyeController extends BaseController {
 				stmtId));
 	}
 
-	@RequestMapping(value = "/addhexiehouse/{stmtId}/{houseId}", method = RequestMethod.GET)
+	@RequestMapping(value = "/addhexiehouse/{stmtId}/{houseId}", method = RequestMethod.POST)
 	@ResponseBody
+	@Transactional(propagation=Propagation.REQUIRED)//如果有事务，那么加入事务，没有的话新创建一个
 	public BaseResult<HexieHouse> addhouses(@ModelAttribute(Constants.USER)User user,
-			@PathVariable String stmtId,
-			@PathVariable String houseId) throws Exception {
-		HexieUser u = wuyeService.bindHouse(user.getWuyeId(), stmtId, houseId);
+			@PathVariable String stmtId, @PathVariable String houseId, @RequestBody HexieHouse house) throws Exception {
+		HexieUser u = wuyeService.bindHouse(user, stmtId, house);
 		if(u != null) {
 			pointService.addZhima(user, 1000, "zhima-house-"+user.getId()+"-"+houseId);
-		}
-		if("1".equals(u.getIs_house()))//绑了房子，则记录
-		{
-			user.setBind_bit("1");
-			user.setSect_id(u.getSect_id());
-			userRepository.save(user);
 		}
 		
 		return BaseResult.successResult(u);
