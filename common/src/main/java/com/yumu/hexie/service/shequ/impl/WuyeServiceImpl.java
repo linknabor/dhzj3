@@ -48,12 +48,19 @@ public class WuyeServiceImpl implements WuyeService {
 		
 		logger.error("total_bind :" + currUser.getTotal_bind());
 		
-		if (currUser.getTotal_bind() == 0) {//从未绑定过的做新增
+		if (currUser.getTotal_bind() <= 0) {//从未绑定过的做新增
 			currUser.setTotal_bind(1);
 			currUser.setSect_id(house.getSect_id());
 			currUser.setSect_name(house.getSect_name());
 			currUser.setCell_id(house.getMng_cell_id());
 			currUser.setCell_addr(house.getCell_addr());
+			
+			user.setTotal_bind(1);
+			user.setSect_id(house.getSect_id());
+			user.setSect_name(house.getSect_name());
+			user.setCell_id(house.getMng_cell_id());
+			user.setCell_addr(house.getCell_addr());
+			
 			userRepository.save(currUser);
 		}else {
 			currUser.setTotal_bind((currUser.getTotal_bind()+1));
@@ -81,12 +88,19 @@ public class WuyeServiceImpl implements WuyeService {
 		
 		User currUser = userRepository.findOne(user.getId());
 		long curr_bind = currUser.getTotal_bind() - 1;
-		if (curr_bind == 0) {
+		if (curr_bind <= 0) {
 			currUser.setSect_id("0");
 			currUser.setSect_name("");
 			currUser.setCell_id("");
 			currUser.setCell_addr("");
 			currUser.setTotal_bind(curr_bind);
+			
+			user.setSect_id("0");
+			user.setSect_name("");
+			user.setCell_id("");
+			user.setCell_addr("");
+			user.setTotal_bind(curr_bind);
+			
 			userRepository.save(currUser);
 		}else {
 			currUser.setTotal_bind(curr_bind);
