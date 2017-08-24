@@ -63,5 +63,13 @@ public class HexieHouse implements Serializable {
 	public void setSect_id(String sect_id) {
 		this.sect_id = sect_id;
 	}
+	@Override
+	public String toString() {
+		return "HexieHouse [mng_cell_id=" + mng_cell_id + ", sect_name="
+				+ sect_name + ", city_name=" + city_name + ", cell_addr="
+				+ cell_addr + ", cnst_area=" + cnst_area + ", ver_no=" + ver_no
+				+ ", park_inf=" + park_inf + ", sect_id=" + sect_id + "]";
+	}
+	
 	
 }

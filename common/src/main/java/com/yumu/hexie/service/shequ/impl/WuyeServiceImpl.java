@@ -3,6 +3,8 @@ package com.yumu.hexie.service.shequ.impl;
 import javax.inject.Inject;
 import javax.xml.bind.ValidationException;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,6 +26,8 @@ import com.yumu.hexie.service.shequ.WuyeService;
 
 @Service("wuyeService")
 public class WuyeServiceImpl implements WuyeService {
+	
+	private static final Logger logger = LoggerFactory.getLogger(WuyeServiceImpl.class);
 
 	@Inject
 	private UserRepository userRepository;
@@ -37,7 +41,13 @@ public class WuyeServiceImpl implements WuyeService {
 	@Transactional(propagation=Propagation.REQUIRED)
 	public HexieUser bindHouse(User user, String stmtId, HexieHouse house) {
 		
+		logger.error("userId : " + user.getId());
+		logger.error("hosue is :" + house.toString());
+		
 		User currUser = userRepository.findOne(user.getId());
+		
+		logger.error("total_bind :" + currUser.getTotal_bind());
+		
 		if (currUser.getTotal_bind() == 0) {//从未绑定过的做新增
 			currUser.setTotal_bind(1);
 			currUser.setSect_id(house.getSect_id());
