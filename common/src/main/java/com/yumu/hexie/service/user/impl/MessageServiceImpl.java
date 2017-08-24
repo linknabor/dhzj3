@@ -5,6 +5,8 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
@@ -19,7 +21,7 @@ import com.yumu.hexie.service.user.MessageService;
 
 @Service(value = "messageService")
 public class MessageServiceImpl implements MessageService {
-
+	private static final Logger log = LoggerFactory.getLogger(MessageServiceImpl.class);
 
 	@Inject
 	private MessageRepository messageRepository;
@@ -104,6 +106,8 @@ public class MessageServiceImpl implements MessageService {
 		}else
 		{
 			List<RegionInfo> regions = regionInfoRepository.queryRegionInfoByRegionType();
+			log.debug(">>>>>>>>>>>>>>>>>>>>"+regions);
+			log.debug(">>>>>>>>>>>>>>>>>>>>"+regions.get(0).getSect_id());
 			return messageRepository.queryMessagesByReginId(msgType, regions.get(0).getSect_id());
 		}
 	}
