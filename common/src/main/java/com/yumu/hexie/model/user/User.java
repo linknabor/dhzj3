@@ -434,5 +434,28 @@ public class User extends BaseModel{
 		this.sect_name = sect_name;
 	}
 
+	@Override
+	public String toString() {
+		return "User [realName=" + realName + ", name=" + name + ", tel=" + tel
+				+ ", provinceId=" + provinceId + ", cityId=" + cityId
+				+ ", countyId=" + countyId + ", xiaoquId=" + xiaoquId
+				+ ", county=" + county + ", xiaoquName=" + xiaoquName
+				+ ", longitude=" + longitude + ", latitude=" + latitude
+				+ ", currentAddrId=" + currentAddrId + ", wuyeId=" + wuyeId
+				+ ", openid=" + openid + ", memo=" + memo + ", subscribe="
+				+ subscribe + ", status=" + status + ", nickname=" + nickname
+				+ ", sex=" + sex + ", age=" + age + ", city=" + city
+				+ ", country=" + country + ", province=" + province
+				+ ", language=" + language + ", headimgurl=" + headimgurl
+				+ ", subscribe_time=" + subscribe_time + ", registerDate="
+				+ registerDate + ", identityCard=" + identityCard + ", zhima="
+				+ zhima + ", lvdou=" + lvdou + ", couponCount=" + couponCount
+				+ ", bindAppId=" + bindAppId + ", bindOpenId=" + bindOpenId
+				+ ", shareCode=" + shareCode + ", newRegiste=" + newRegiste
+				+ ", total_bind=" + total_bind + ", sect_id=" + sect_id
+				+ ", sect_name=" + sect_name + ", cell_id=" + cell_id
+				+ ", cell_addr=" + cell_addr + "]";
+	}
+
 	
 }

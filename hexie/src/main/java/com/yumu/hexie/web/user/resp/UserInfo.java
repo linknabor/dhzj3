@@ -56,7 +56,7 @@ public class UserInfo implements Serializable {
     
     private String xiaoquName;
     private long id;
-    private long sect_id;
+    private String sect_id;
 
     public UserInfo(){}
     public UserInfo(User user){
@@ -240,10 +240,10 @@ public class UserInfo implements Serializable {
     public void setId(long id) {
         this.id = id;
     }
-	public long getSect_id() {
+	public String getSect_id() {
 		return sect_id;
 	}
-	public void setSect_id(long sect_id) {
+	public void setSect_id(String sect_id) {
 		this.sect_id = sect_id;
 	}
     

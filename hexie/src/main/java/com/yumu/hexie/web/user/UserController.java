@@ -77,11 +77,14 @@ public class UserController extends BaseController{
     public BaseResult<UserInfo> userInfo(HttpSession session,@ModelAttribute(Constants.USER)User user) throws Exception {
         user = userService.getById(user.getId());
         if(user != null){
+        	log.error(">>>>>>>>>1>>>>>>>>>>>>>"+user.toString());
         	if (StringUtil.isEmpty(user.getOpenid())) {
     			return new BaseResult<UserInfo>().failCode(BaseResult.NEED_MAIN_LOGIN); 
 			}
         	session.setAttribute(Constants.USER, user);
-            return new BaseResult<UserInfo>().success(new UserInfo(user,operatorService.isOperator(HomeServiceConstant.SERVICE_TYPE_REPAIR,user.getId())));
+        	UserInfo userinfo = new UserInfo(user,operatorService.isOperator(HomeServiceConstant.SERVICE_TYPE_REPAIR,user.getId()));
+        	log.error(">>>>>>>>>>>2>>>>>>>>>"+userinfo.toString());
+            return new BaseResult<UserInfo>().success(userinfo);
         } else {
             return new BaseResult<UserInfo>().success(null);
         }
