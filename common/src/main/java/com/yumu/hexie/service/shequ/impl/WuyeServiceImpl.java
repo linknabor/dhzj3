@@ -3,6 +3,8 @@ package com.yumu.hexie.service.shequ.impl;
 import javax.inject.Inject;
 import javax.xml.bind.ValidationException;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,6 +26,8 @@ import com.yumu.hexie.service.shequ.WuyeService;
 
 @Service("wuyeService")
 public class WuyeServiceImpl implements WuyeService {
+	
+	private static final Logger logger = LoggerFactory.getLogger(WuyeServiceImpl.class);
 
 	@Inject
 	private UserRepository userRepository;
@@ -37,13 +41,26 @@ public class WuyeServiceImpl implements WuyeService {
 	@Transactional(propagation=Propagation.REQUIRED)
 	public HexieUser bindHouse(User user, String stmtId, HexieHouse house) {
 		
+		logger.error("userId : " + user.getId());
+		logger.error("hosue is :" + house.toString());
+		
 		User currUser = userRepository.findOne(user.getId());
-		if (currUser.getTotal_bind() == 0) {//从未绑定过的做新增
+		
+		logger.error("total_bind :" + currUser.getTotal_bind());
+		
+		if (currUser.getTotal_bind() <= 0) {//从未绑定过的做新增
 			currUser.setTotal_bind(1);
 			currUser.setSect_id(house.getSect_id());
 			currUser.setSect_name(house.getSect_name());
 			currUser.setCell_id(house.getMng_cell_id());
 			currUser.setCell_addr(house.getCell_addr());
+			
+			user.setTotal_bind(1);
+			user.setSect_id(house.getSect_id());
+			user.setSect_name(house.getSect_name());
+			user.setCell_id(house.getMng_cell_id());
+			user.setCell_addr(house.getCell_addr());
+			
 			userRepository.save(currUser);
 		}else {
 			currUser.setTotal_bind((currUser.getTotal_bind()+1));
@@ -71,12 +88,19 @@ public class WuyeServiceImpl implements WuyeService {
 		
 		User currUser = userRepository.findOne(user.getId());
 		long curr_bind = currUser.getTotal_bind() - 1;
-		if (curr_bind == 0) {
+		if (curr_bind <= 0) {
 			currUser.setSect_id("0");
 			currUser.setSect_name("");
 			currUser.setCell_id("");
 			currUser.setCell_addr("");
 			currUser.setTotal_bind(curr_bind);
+			
+			user.setSect_id("0");
+			user.setSect_name("");
+			user.setCell_id("");
+			user.setCell_addr("");
+			user.setTotal_bind(curr_bind);
+			
 			userRepository.save(currUser);
 		}else {
 			currUser.setTotal_bind(curr_bind);
