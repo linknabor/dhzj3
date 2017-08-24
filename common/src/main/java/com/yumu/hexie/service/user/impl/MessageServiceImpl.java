@@ -5,6 +5,8 @@ import java.util.List;
 
 import javax.inject.Inject;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
@@ -19,7 +21,7 @@ import com.yumu.hexie.service.user.MessageService;
 
 @Service(value = "messageService")
 public class MessageServiceImpl implements MessageService {
-
+	private static final Logger log = LoggerFactory.getLogger(MessageServiceImpl.class);
 
 	@Inject
 	private MessageRepository messageRepository;
@@ -41,7 +43,7 @@ public class MessageServiceImpl implements MessageService {
 		List<String> list = new ArrayList<String>();
 		List<RegionInfo> regions = null;
 		//1.判断用户是否绑定房屋
-		if(!StringUtil.isEmpty(sect_id) || !"0".equals(sect_id))//绑定了房屋
+		if(!StringUtil.isEmpty(sect_id) && !"0".equals(sect_id))//绑定了房屋
 		{
 			regions = regionInfoRepository.findAllByRegionType(sect_id);
 			if(regions.size()!=0)
@@ -76,7 +78,7 @@ public class MessageServiceImpl implements MessageService {
 	
 	public void saveList(List<String> list,String id)
 	{
-		if(!StringUtil.isEmpty(id) || !"0".equals(id))
+		if(!StringUtil.isEmpty(id) && !"0".equals(id))
 		{
 			list.add(id);
 		}
@@ -97,8 +99,17 @@ public class MessageServiceImpl implements MessageService {
 	}
 
 	@Override
-	public Message findOneByregionId(int msgType, String regionId) {
-		return messageRepository.queryMessagesByReginId(msgType, regionId);
+	public Message findOneByregionId(int msgType, String regionId, boolean type) {
+		if(type)
+		{
+			return messageRepository.queryMessagesByReginId(msgType, regionId);
+		}else
+		{
+			List<RegionInfo> regions = regionInfoRepository.queryRegionInfoByRegionType();
+			log.debug(">>>>>>>>>>>>>>>>>>>>"+regions);
+			log.debug(">>>>>>>>>>>>>>>>>>>>"+regions.get(0).getSect_id());
+			return messageRepository.queryMessagesByReginId(msgType, regions.get(0).getSect_id());
+		}
 	}
 
 }

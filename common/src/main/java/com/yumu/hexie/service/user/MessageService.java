@@ -14,7 +14,7 @@ public interface MessageService {
 	
 	public Message findOne(long messageId);
 	
-	public Message findOneByregionId(int msgType, String regionId);
+	public Message findOneByregionId(int msgType, String regionId, boolean type);
 	
 	public Feedback reply(long userId,String userName,String userHeader,long messageId,String content);
 	
