@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.yumu.hexie.integration.wuye.WuyeUtil;
 import com.yumu.hexie.integration.wuye.resp.BaseResult;
 import com.yumu.hexie.integration.wuye.resp.BillListVO;
+import com.yumu.hexie.integration.wuye.resp.CellListVO;
 import com.yumu.hexie.integration.wuye.resp.HouseListVO;
 import com.yumu.hexie.integration.wuye.resp.PayWaterListVO;
 import com.yumu.hexie.integration.wuye.vo.HexieHouse;
@@ -117,8 +118,8 @@ public class WuyeServiceImpl implements WuyeService {
 	}
 
 	@Override
-	public HexieHouse getHouse(String userId, String stmtId) {
-		return WuyeUtil.getHouse(userId, stmtId).getData();
+	public HexieHouse getHouse(String userId, String stmtId, String house_id) {
+		return WuyeUtil.getHouse(userId, stmtId, house_id).getData();
 	}
 
 	@Override
@@ -139,8 +140,8 @@ public class WuyeServiceImpl implements WuyeService {
 
 	@Override
 	public BillListVO queryBillList(String userId, String payStatus,
-			String startDate, String endDate,String currentPage, String totalCount) {
-		return WuyeUtil.queryBillList(userId, payStatus, startDate, endDate, currentPage, totalCount).getData();
+			String startDate, String endDate,String currentPage, String totalCount, String house_id) {
+		return WuyeUtil.queryBillList(userId, payStatus, startDate, endDate, currentPage, totalCount, house_id).getData();
 	}
 
 	@Override
@@ -172,6 +173,17 @@ public class WuyeServiceImpl implements WuyeService {
 
 		BaseResult<String> r = WuyeUtil.couponUseQuery(userId);
 		return r.getResult();
+	}
+
+	@Override
+	public CellListVO querySectList() {
+		return WuyeUtil.getSectList().getData();
+	}
+
+	@Override
+	public CellListVO querySectList(String sect_id, String build_id,
+			String unit_id, String data_type) {
+		return WuyeUtil.getMngList(sect_id, build_id, unit_id, data_type).getData();
 	}
 	
 	

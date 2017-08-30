@@ -5,6 +5,7 @@ import javax.xml.bind.ValidationException;
 import com.yumu.hexie.integration.wuye.resp.BillListVO;
 import com.yumu.hexie.integration.wuye.resp.HouseListVO;
 import com.yumu.hexie.integration.wuye.resp.PayWaterListVO;
+import com.yumu.hexie.integration.wuye.resp.CellListVO;
 import com.yumu.hexie.integration.wuye.vo.HexieHouse;
 import com.yumu.hexie.integration.wuye.vo.HexieUser;
 import com.yumu.hexie.integration.wuye.vo.PayResult;
@@ -23,7 +24,7 @@ public interface WuyeService {
 	// 3.删除房产
 	public boolean deleteHouse(User user, String userId,String houseId);
 	// 4.根据订单查询房产信息
-	public HexieHouse getHouse(String userId,String stmtId);
+	public HexieHouse getHouse(String userId,String stmtId, String house_id);
 	// 5.用户登录
 	public HexieUser userLogin(String openId);
 	// 6.缴费记录查询
@@ -32,7 +33,7 @@ public interface WuyeService {
 	public PaymentInfo queryPaymentDetail(String userId,String waterId);
 	//status 00,01,02? startDate 2015-02
 	// 8.账单记录
-	public BillListVO queryBillList(String userId,String payStatus,String startDate,String endDate,String currentPage, String totalCount);
+	public BillListVO queryBillList(String userId,String payStatus,String startDate,String endDate,String currentPage, String totalCount, String house_id);
 	// 9.账单详情 anotherbillIds(逗号分隔) 汇总了去支付,来自BillInfo的bill_id
 	public PaymentInfo getBillDetail(String userId,String stmtId,String anotherbillIds);
 	// 10.缴费
@@ -44,4 +45,9 @@ public interface WuyeService {
 	// 12.查询是否已经用过红包
 	public String queryCouponIsUsed(String userId);
 	
+	//13.查询小区信息
+	public CellListVO querySectList();
+	
+	//14.根据数据类型查询指定的物业单元信息
+	public CellListVO querySectList(String sect_id, String build_id, String unit_id, String data_type);
 }
