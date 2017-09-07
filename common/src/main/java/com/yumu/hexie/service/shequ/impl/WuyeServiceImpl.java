@@ -164,25 +164,24 @@ public class WuyeServiceImpl implements WuyeService {
 				.getData();
 	}
 
+	public PaymentInfo queryPayMent(String userId, String waterId) {
+		return WuyeUtil.queryPaymentDetail(userId, waterId).getData();
+	}
+	
 	@Override
 	public PayResult noticePayed(User user, String billId, String stmtId, String tradeWaterId, String packageId, String bind_switch) {
 		PayResult pay = WuyeUtil.noticePayed(user.getWuyeId(), billId, stmtId, tradeWaterId, packageId).getData();
 		//如果switch为1，则顺便绑定该房屋
 		if("1".equals(bind_switch))
 		{
-			PaymentInfo payInfo = queryPaymentDetail(user.getWuyeId(), tradeWaterId);
-			List<PaymentData> paymentData = payInfo.getFee_data();
-			List<String> listMng = new ArrayList<String>();
+			@SuppressWarnings("rawtypes")
+			BaseResult result = WuyeUtil.getPayWaterToCell(user.getWuyeId(), tradeWaterId);
+			String ids = (String) result.getData();
+			String[] idsSuff = ids.split(",");
 			//因为考虑一次支持存在多套房子的情况
-			for (int i = 0; i < paymentData.size(); i++) {
-				PaymentData p = paymentData.get(i);
-				listMng.add(p.getMng_cell_id());
-			}
-			//对重复的房屋ID去重后循环绑定房屋
-			List<String> newList = new ArrayList<String>(new TreeSet<String>(listMng));
-			for (int i = 0; i < newList.size(); i++) {
+			for (int i = 0; i < idsSuff.length; i++) {
 				try {
-					HexieHouse house = getHouse(user.getWuyeId(), stmtId, newList.get(i));
+					HexieHouse house = getHouse(user.getWuyeId(), stmtId, idsSuff[i]);
 					if(house!=null)
 					{
 						bindHouse(user, stmtId, house);

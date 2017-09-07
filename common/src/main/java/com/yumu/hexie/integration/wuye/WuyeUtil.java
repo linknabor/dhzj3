@@ -65,6 +65,7 @@ public class WuyeUtil {
 	private static final String COUPON_USE_QUERY_URL = "conponUseQuerySDO.do?user_id=%s";
 	private static final String SECT_LIST_URL = "querySectByCspIdSDO.do?csp_id=%s";
 	private static final String MNG_LIST_URL = "queryMngByIdSDO.do?sect_id=%s&build_id=%s&unit_id=%s&data_type=%s";
+	private static final String PAY_WATER_URL = "getMngCellByTradeIdSDO.do?user_id=%s&trade_water_id=%s"; // 获取支付记录涉及的房屋
 	
 	public static BaseResult<BillListVO> quickPayInfo(String stmtId, String currPage, String totalCount) {
 		String url = REQUEST_ADDRESS + String.format(QUICK_PAY_URL, stmtId, currPage, totalCount);
@@ -168,6 +169,13 @@ public class WuyeUtil {
 	{
 		String url = REQUEST_ADDRESS + String.format(MNG_LIST_URL, sect_id, build_id, unit_id, data_type);
 		return (BaseResult<CellListVO>)httpGet(url,CellListVO.class);
+	}
+	
+	//15.根据交易ID查询涉及到的房屋
+	public static BaseResult getPayWaterToCell(String userId, String trade_water_id)
+	{
+		String url = REQUEST_ADDRESS + String.format(PAY_WATER_URL, userId, trade_water_id);
+		return httpGet(url, BaseResult.class);
 	}
 	
 	
