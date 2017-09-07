@@ -1,5 +1,10 @@
 package com.yumu.hexie.service.shequ.impl;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.TreeSet;
+
 import javax.inject.Inject;
 import javax.xml.bind.ValidationException;
 
@@ -18,6 +23,7 @@ import com.yumu.hexie.integration.wuye.resp.PayWaterListVO;
 import com.yumu.hexie.integration.wuye.vo.HexieHouse;
 import com.yumu.hexie.integration.wuye.vo.HexieUser;
 import com.yumu.hexie.integration.wuye.vo.PayResult;
+import com.yumu.hexie.integration.wuye.vo.PaymentData;
 import com.yumu.hexie.integration.wuye.vo.PaymentInfo;
 import com.yumu.hexie.integration.wuye.vo.WechatPayInfo;
 import com.yumu.hexie.model.user.User;
@@ -159,8 +165,36 @@ public class WuyeServiceImpl implements WuyeService {
 	}
 
 	@Override
-	public PayResult noticePayed(String userId, String billId, String stmtId, String tradeWaterId, String packageId) {
-		return WuyeUtil.noticePayed(userId, billId, stmtId, tradeWaterId, packageId).getData();
+	public PayResult noticePayed(User user, String billId, String stmtId, String tradeWaterId, String packageId, String bind_switch) {
+		PayResult pay = WuyeUtil.noticePayed(user.getWuyeId(), billId, stmtId, tradeWaterId, packageId).getData();
+		//如果switch为1，则顺便绑定该房屋
+		if("1".equals(bind_switch))
+		{
+			PaymentInfo payInfo = queryPaymentDetail(user.getWuyeId(), tradeWaterId);
+			List<PaymentData> paymentData = payInfo.getFee_data();
+			List<String> listMng = new ArrayList<String>();
+			//因为考虑一次支持存在多套房子的情况
+			for (int i = 0; i < paymentData.size(); i++) {
+				PaymentData p = paymentData.get(i);
+				listMng.add(p.getMng_cell_id());
+			}
+			//对重复的房屋ID去重后循环绑定房屋
+			List<String> newList = new ArrayList<String>(new TreeSet<String>(listMng));
+			for (int i = 0; i < newList.size(); i++) {
+				try {
+					HexieHouse house = getHouse(user.getWuyeId(), stmtId, newList.get(i));
+					if(house!=null)
+					{
+						bindHouse(user, stmtId, house);
+					}
+				} catch(Exception e)
+				{
+					//不影响支付完整性，如果有问题则不向外面抛
+					logger.error("bind house error:"+e);
+				}
+			}
+		}
+		return pay;
 	}
 
 	@Override

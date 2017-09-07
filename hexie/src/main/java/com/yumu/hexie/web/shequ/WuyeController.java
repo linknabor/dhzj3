@@ -250,9 +250,10 @@ public class WuyeController extends BaseController {
 	public BaseResult<String> noticePayed(@ModelAttribute(Constants.USER)User user,
 			@RequestParam(required=false) String billId,@RequestParam(required=false) String stmtId, 
 			@RequestParam(required=false) String tradeWaterId, @RequestParam(required=false) String packageId,
-			@RequestParam(required=false) String feePrice, @RequestParam(required=false) String couponId)
+			@RequestParam(required=false) String feePrice, @RequestParam(required=false) String couponId,
+			@RequestParam(required=false) String bind_switch)
 			throws Exception {
-		PayResult payResult = wuyeService.noticePayed(user.getWuyeId(), billId, stmtId, tradeWaterId, packageId);
+		PayResult payResult = wuyeService.noticePayed(user, billId, stmtId, tradeWaterId, packageId, bind_switch);
 		
 		String trade_status = payResult.getMerger_status();
 //		if ("01".equals(trade_status)) {	//01表示支付成功，02表示未支付成功

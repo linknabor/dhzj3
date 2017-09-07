@@ -41,7 +41,7 @@ public interface WuyeService {
 				String openId, String couponUnit, String couponNum, 
 				String couponId,String mianBill,String mianAmt, String reduceAmt) throws ValidationException;
 	// 11.通知已支付
-	public PayResult noticePayed(String userId,String billId,String stmtId, String tradeWaterId, String packageId);
+	public PayResult noticePayed(User user,String billId,String stmtId, String tradeWaterId, String packageId, String bind_switch);
 	// 12.查询是否已经用过红包
 	public String queryCouponIsUsed(String userId);
 	
