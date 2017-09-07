@@ -192,7 +192,7 @@ public class GotongServiceImpl implements GotongService {
 			msg.setMsgtype(ConstantWeChat.REQ_MESSAGE_TYPE_TEXT);
 			
 			String accessToken = systemConfigService.queryWXAToken();
-			CustomService.sendCustomerMessage(news, accessToken);
+			CustomService.sendCustomerMessage(msg, accessToken);
 		}
     	 
     }
@@ -210,7 +210,7 @@ public class GotongServiceImpl implements GotongService {
 		msg.setTouser("o_3DlwdnCLCz3AbTrZqj4HtKeQYY");
 		msg.setMsgtype(ConstantWeChat.REQ_MESSAGE_TYPE_TEXT);
 		
-		String accessToken = "wLymu0N6MmjytPxGSWkfwNPzdEHawtTs9T3GHcFdw73Z4uonrPMZFwaYwxsb2__4AC11JmzQjCuX4feyteeghJgCYFZ8FS3YA6D7NB_LoDT2Kv4XigvLiIdd37qzJtHcHLIdAIAVZW";
+		String accessToken = "nk1jXdFm82PaGZEsz9flDrgJPgA8jNd13ZJ4bCFAvdtwOgg2_3LzSWX28WkV1cW3hgnmaPYYdlNX3Imb87E8OnY6Yudmp4iEj4Mjjya2ogEAPFaABAHWM";
 		CustomService.sendCustomerMessage(msg, accessToken);
     	
     }
