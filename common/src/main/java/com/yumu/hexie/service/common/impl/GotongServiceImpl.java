@@ -63,17 +63,6 @@ public class GotongServiceImpl implements GotongService {
     
     public static String THREAD_NOTICE_DESC = "业主姓名：NAME\r联系方式：TEL\r业主地址：CELL_ADDR\r类型:CATEGORY\rCONTENT";
     
-    public static Map<String, String>categoryMap;
-    
-    @PostConstruct   
-    public void init(){
-    	
-    	categoryMap = new HashMap<String, String>();
-    	categoryMap.put("0", "服务需求");
-    	categoryMap.put("1", "意见建议");
-    	categoryMap.put("2", "报修");
-    
-    }
     
     @Inject
     private ServiceOperatorRepository  serviceOperatorRepository;
@@ -184,6 +173,11 @@ public class GotongServiceImpl implements GotongService {
 				}
 			}
 			LOG.error("发送到操作员 id:" + threadOperator.getId() + ", name : " + threadOperator.getUserName());
+			
+			Map <String, String> categoryMap = new HashMap<String, String>();
+	    	categoryMap.put("0", "服务需求");
+	    	categoryMap.put("1", "意见建议");
+	    	categoryMap.put("2", "报修");
 			
 			Article article = new Article();
 			article.setTitle("管家服务有新消息发布");
