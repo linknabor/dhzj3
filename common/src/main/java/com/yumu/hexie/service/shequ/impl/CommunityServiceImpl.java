@@ -22,8 +22,10 @@ import com.yumu.hexie.model.community.CommunityInfoRepository;
 import com.yumu.hexie.model.community.Thread;
 import com.yumu.hexie.model.community.ThreadComment;
 import com.yumu.hexie.model.community.ThreadCommentRepository;
+import com.yumu.hexie.model.community.ThreadOperatorRepository;
 import com.yumu.hexie.model.community.ThreadRepository;
 import com.yumu.hexie.model.user.User;
+import com.yumu.hexie.service.common.GotongService;
 import com.yumu.hexie.service.exception.BizValidateException;
 import com.yumu.hexie.service.shequ.CommunityService;
 
@@ -41,6 +43,8 @@ public class CommunityServiceImpl implements CommunityService {
 	
 	@Inject
 	private AnnoucementRepository annoucementRepository;
+	
+	@Inject GotongService gotongService;
 	
 	@Override
 	public List<Thread> getThreadList(long userSectId, Pageable page) {
@@ -81,6 +85,8 @@ public class CommunityServiceImpl implements CommunityService {
 		thread.setUserSectName(user.getXiaoquName());
 		thread.setStickPriority("0");	//默认优先级0，为最低
 		threadRepository.save(thread);
+		
+		gotongService.sendThreadPubNotify(user, thread);
 		
 		return thread;
 	}

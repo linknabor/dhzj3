@@ -21,6 +21,8 @@ import com.yumu.hexie.integration.wechat.entity.customer.News;
 import com.yumu.hexie.integration.wechat.entity.customer.NewsMessage;
 import com.yumu.hexie.integration.wechat.service.CustomService;
 import com.yumu.hexie.integration.wechat.service.TemplateMsgService;
+import com.yumu.hexie.model.community.ThreadOperator;
+import com.yumu.hexie.model.community.ThreadOperatorRepository;
 import com.yumu.hexie.model.localservice.ServiceOperator;
 import com.yumu.hexie.model.localservice.ServiceOperatorRepository;
 import com.yumu.hexie.model.localservice.bill.YunXiyiBill;
@@ -54,6 +56,8 @@ public class GotongServiceImpl implements GotongService {
     
     public static String SUBSCRIBE_DETAIL = ConfigUtil.get("subscribeDetail");
     
+    public static String THREAD_URL = ConfigUtil.get("threadUrl");
+    
     @Inject
     private ServiceOperatorRepository  serviceOperatorRepository;
     @Inject
@@ -62,6 +66,8 @@ public class GotongServiceImpl implements GotongService {
     private OperatorService  operatorService;
     @Inject
     private SystemConfigService systemConfigService;
+    @Inject
+    private ThreadOperatorRepository threadOperatorRepository;
 
     @Async
     @Override
@@ -92,6 +98,7 @@ public class GotongServiceImpl implements GotongService {
 	public void sendSubscribeMsg(User user) {
 
          Article article = new Article();
+         
          article.setTitle("欢迎加入光明悦生活！");
          article.setDescription("您已获得关注红包，点击查看。");
          article.setPicurl(SUBSCRIBE_IMG);
@@ -145,4 +152,38 @@ public class GotongServiceImpl implements GotongService {
         }
         
     }
+    
+    @Async
+	@Override
+	public void sendThreadPubNotify(User user, com.yumu.hexie.model.community.Thread thread) {
+
+    	LOG.error("发送管家帖子发布通知, threadId: ["+thread.getThreadId()+"]");
+    	 
+    	List<ThreadOperator> list = threadOperatorRepository.findAll();
+		for (ThreadOperator threadOperator : list) {
+			if ("3".equals(threadOperator.getRegionType())) {
+				if (!user.getSect_id().equals(threadOperator.getRegionSectId())) {
+					continue;
+				}
+			}
+			LOG.error("发送到操作员 id:" + threadOperator.getId() + ", name : " + threadOperator.getUserName());
+			
+			Article article = new Article();
+	         
+			article.setTitle("管家服务有新的消息发布啦！");
+			article.setDescription("点击查看。");
+			article.setUrl(THREAD_URL+thread.getThreadId());
+			
+			News news = new News(new ArrayList<Article>());
+			news.getArticles().add(article);
+			NewsMessage msg = new NewsMessage(news);
+			msg.setTouser(threadOperator.getOpenId());
+			msg.setMsgtype(ConstantWeChat.REQ_MESSAGE_TYPE_TEXT);
+			
+			String accessToken = systemConfigService.queryWXAToken();
+			CustomService.sendCustomerMessage(news, accessToken);
+		}
+    	 
+    }
+    
 }
