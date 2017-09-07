@@ -188,17 +188,17 @@ public class GotongServiceImpl implements GotongService {
 			Article article = new Article();
 			article.setTitle("管家服务有新消息发布");
 			
-			String name = user.getName();
-			String tel = user.getTel();
-			String cell_addr = user.getCell_addr();
-			String category = thread.getThreadCategory();
-			String content = thread.getThreadContent();
-			
-			LOG.error("name:"+name+",tel:"+tel+",cell_addr:"+cell_addr+"category:"+category+"content:"+content);
-			LOG.error(String.valueOf(categoryMap.entrySet().size()));
+//			String name = user.getName();
+//			String tel = user.getTel();
+//			String cell_addr = user.getCell_addr();
+//			String category = thread.getThreadCategory();
+//			String content = thread.getThreadContent();
+//			
+//			LOG.error("name:"+name+",tel:"+tel+",cell_addr:"+cell_addr+"category:"+category+"content:"+content);
+//			LOG.error(String.valueOf(categoryMap.entrySet().size()));
 			
 			String desc = THREAD_NOTICE_DESC.replace("NAME", user.getName()).
-					replace("TEL", user.getTel()).replace("CELL_ADDR", user.getCell_addr()).
+					replace("TEL", user.getTel()==null?"":user.getTel()).replace("CELL_ADDR", user.getCell_addr()).
 					replace("CATEGORY", categoryMap.get(thread.getThreadCategory())).
 					replace("CONTENT", thread.getThreadContent());
 			
