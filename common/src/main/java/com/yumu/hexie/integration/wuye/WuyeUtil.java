@@ -172,10 +172,10 @@ public class WuyeUtil {
 	}
 	
 	//15.根据交易ID查询涉及到的房屋
-	public static BaseResult getPayWaterToCell(String userId, String trade_water_id)
+	public static BaseResult<String> getPayWaterToCell(String userId, String trade_water_id)
 	{
 		String url = REQUEST_ADDRESS + String.format(PAY_WATER_URL, userId, trade_water_id);
-		return httpGet(url, BaseResult.class);
+		return (BaseResult<String>)httpGet(url, String.class);
 	}
 	
 	

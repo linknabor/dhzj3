@@ -174,9 +174,8 @@ public class WuyeServiceImpl implements WuyeService {
 		//如果switch为1，则顺便绑定该房屋
 		if("1".equals(bind_switch))
 		{
-			@SuppressWarnings("rawtypes")
-			BaseResult result = WuyeUtil.getPayWaterToCell(user.getWuyeId(), tradeWaterId);
-			String ids = (String) result.getData();
+			BaseResult<String> result = WuyeUtil.getPayWaterToCell(user.getWuyeId(), tradeWaterId);
+			String ids = result.getResult();
 			String[] idsSuff = ids.split(",");
 			//因为考虑一次支持存在多套房子的情况
 			for (int i = 0; i < idsSuff.length; i++) {
