@@ -6,6 +6,7 @@ package com.yumu.hexie.service.common.impl;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import javax.inject.Inject;
 
@@ -56,7 +57,19 @@ public class GotongServiceImpl implements GotongService {
     
     public static String SUBSCRIBE_DETAIL = ConfigUtil.get("subscribeDetail");
     
-    public static String THREAD_URL = ConfigUtil.get("threadUrl");
+    public static String THREAD_NOTICE_URL = ConfigUtil.get("threadUrl");
+    
+    public static String THREAD_NOTICE_DESC = "业主姓名：NAME\r联系方式：TEL\r业主地址：CELL_ADDR\r类型:CATEGORY\rCONTENT";
+    
+    public static Map<String, String>categoryMap;
+    
+    static{
+    	
+    	categoryMap.put("0", "服务需求");
+    	categoryMap.put("1", "意见建议");
+    	categoryMap.put("2", "报修");
+    	
+    }
     
     @Inject
     private ServiceOperatorRepository  serviceOperatorRepository;
@@ -168,28 +181,21 @@ public class GotongServiceImpl implements GotongService {
 			}
 			LOG.error("发送到操作员 id:" + threadOperator.getId() + ", name : " + threadOperator.getUserName());
 			
-//			Article article = new Article();
-//			article.setTitle("欢迎加入光明悦生活！");
-//	        article.setDescription("您已获得关注红包，点击查看。");
-//	        article.setPicurl(SUBSCRIBE_IMG);
-//	        article.setUrl(SUBSCRIBE_DETAIL);
-//	        News news = new News(new ArrayList<Article>());
-//	        news.getArticles().add(article);
-//	        NewsMessage msg = new NewsMessage(news);
-//	        msg.setTouser(user.getOpenid());
-//	        msg.setMsgtype(ConstantWeChat.RESP_MESSAGE_TYPE_NEWS);
-//	        String accessToken = systemConfigService.queryWXAToken();
-			
 			Article article = new Article();
-			article.setTitle("管家服务有新的消息发布啦！");
-			article.setDescription("点击查看。");
-			article.setUrl(THREAD_URL+thread.getThreadId());
+			article.setTitle("管家服务有新消息发布");
+			String desc = THREAD_NOTICE_DESC.replace("NAME", user.getName()).
+					replace("TEL", user.getTel()).replace("CELL_ADDR", user.getCell_addr()).
+					replace("CATEGORY", categoryMap.get(thread.getThreadCategory())).
+					replace("CONTENT", thread.getThreadContent());
+			
+			article.setDescription(desc);
+			article.setUrl(THREAD_NOTICE_URL+thread.getThreadId());
 			
 			News news = new News(new ArrayList<Article>());
 			news.getArticles().add(article);
 			NewsMessage msg = new NewsMessage(news);
 			msg.setTouser(threadOperator.getOpenId());
-			msg.setMsgtype(ConstantWeChat.REQ_MESSAGE_TYPE_TEXT);
+			msg.setMsgtype(ConstantWeChat.RESP_MESSAGE_TYPE_NEWS);
 			
 			String accessToken = systemConfigService.queryWXAToken();
 			CustomService.sendCustomerMessage(msg, accessToken);
@@ -200,17 +206,17 @@ public class GotongServiceImpl implements GotongService {
     public static void main(String[] args) {
 	
     	Article article = new Article();
-		article.setTitle("管家服务有新的消息发布啦！");
-		article.setDescription("点击查看。");
-		article.setUrl(THREAD_URL+11);
+		article.setTitle("管家服务有新消息");
+		article.setDescription("业主姓名：yiming\r联系方式：18116419486\r业主地址：浦东新区三林路128弄1单元103室\r类型:测试 \r阿朵司法所飞洒发放的说法as范德萨发送发放阿斯蒂芬撒法撒旦法撒 阿朵司法所飞洒发放的说法as范德萨发送发放阿斯蒂芬撒法撒旦法撒");
+		article.setUrl("https://www.e-shequ.com/dhzj3/weixin/communities/threadDetail.html?threadId=11");
 		
 		News news = new News(new ArrayList<Article>());
 		news.getArticles().add(article);
 		NewsMessage msg = new NewsMessage(news);
 		msg.setTouser("o_3DlwdnCLCz3AbTrZqj4HtKeQYY");
-		msg.setMsgtype(ConstantWeChat.REQ_MESSAGE_TYPE_TEXT);
+		msg.setMsgtype(ConstantWeChat.RESP_MESSAGE_TYPE_NEWS);
 		
-		String accessToken = "nk1jXdFm82PaGZEsz9flDrgJPgA8jNd13ZJ4bCFAvdtwOgg2_3LzSWX28WkV1cW3hgnmaPYYdlNX3Imb87E8OnY6Yudmp4iEj4Mjjya2ogEAPFaABAHWM";
+		String accessToken = "ZunBWUlbDfqe2AN4rVMOST70fD_kEImeDWyEORcqmtEKo6TxWgkP6IWQWsIJPP4jrFVo0OYtlOSABpV1sLDsD9QE-O_fMQAFAErTpO-xONrzVS_vKchuKSN57AHhRwDUIDIhAIAOJO";
 		CustomService.sendCustomerMessage(msg, accessToken);
     	
     }
