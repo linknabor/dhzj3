@@ -116,7 +116,7 @@ public class GotongServiceImpl implements GotongService {
 
          Article article = new Article();
          
-         article.setTitle("欢迎加入光明悦生活！");
+         article.setTitle("欢迎加入东湖e家园！");
          article.setDescription("您已获得关注红包，点击查看。");
          article.setPicurl(SUBSCRIBE_IMG);
          article.setUrl(SUBSCRIBE_DETAIL);

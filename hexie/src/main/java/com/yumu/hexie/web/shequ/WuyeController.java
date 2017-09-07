@@ -326,7 +326,7 @@ public class WuyeController extends BaseController {
 	
 	@Async
 	private void sendMsg(User user){
-		String msg = "您好，欢迎加入光明悦生活。您已获得价值10元红包一份。感谢您对光明悦生活的支持。";
+		String msg = "您好，欢迎加入东湖e家园。您已获得价值10元红包一份。感谢您对东湖e家园的支持。";
 		smsService.sendMsg(user.getId(), user.getTel(), msg, 11, 3);
 	}
 	
