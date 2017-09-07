@@ -168,8 +168,19 @@ public class GotongServiceImpl implements GotongService {
 			}
 			LOG.error("发送到操作员 id:" + threadOperator.getId() + ", name : " + threadOperator.getUserName());
 			
+//			Article article = new Article();
+//			article.setTitle("欢迎加入光明悦生活！");
+//	        article.setDescription("您已获得关注红包，点击查看。");
+//	        article.setPicurl(SUBSCRIBE_IMG);
+//	        article.setUrl(SUBSCRIBE_DETAIL);
+//	        News news = new News(new ArrayList<Article>());
+//	        news.getArticles().add(article);
+//	        NewsMessage msg = new NewsMessage(news);
+//	        msg.setTouser(user.getOpenid());
+//	        msg.setMsgtype(ConstantWeChat.RESP_MESSAGE_TYPE_NEWS);
+//	        String accessToken = systemConfigService.queryWXAToken();
+			
 			Article article = new Article();
-	         
 			article.setTitle("管家服务有新的消息发布啦！");
 			article.setDescription("点击查看。");
 			article.setUrl(THREAD_URL+thread.getThreadId());
@@ -184,6 +195,24 @@ public class GotongServiceImpl implements GotongService {
 			CustomService.sendCustomerMessage(news, accessToken);
 		}
     	 
+    }
+    
+    public static void main(String[] args) {
+	
+    	Article article = new Article();
+		article.setTitle("管家服务有新的消息发布啦！");
+		article.setDescription("点击查看。");
+		article.setUrl(THREAD_URL+11);
+		
+		News news = new News(new ArrayList<Article>());
+		news.getArticles().add(article);
+		NewsMessage msg = new NewsMessage(news);
+		msg.setTouser("o_3DlwdnCLCz3AbTrZqj4HtKeQYY");
+		msg.setMsgtype(ConstantWeChat.REQ_MESSAGE_TYPE_TEXT);
+		
+		String accessToken = "wLymu0N6MmjytPxGSWkfwNPzdEHawtTs9T3GHcFdw73Z4uonrPMZFwaYwxsb2__4AC11JmzQjCuX4feyteeghJgCYFZ8FS3YA6D7NB_LoDT2Kv4XigvLiIdd37qzJtHcHLIdAIAVZW";
+		CustomService.sendCustomerMessage(msg, accessToken);
+    	
     }
     
 }
