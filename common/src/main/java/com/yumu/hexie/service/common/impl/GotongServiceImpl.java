@@ -61,7 +61,7 @@ public class GotongServiceImpl implements GotongService {
     
     public static String THREAD_NOTICE_URL = ConfigUtil.get("threadUrl");
     
-    public static String THREAD_NOTICE_DESC = "业主姓名：NAME\r联系方式：TEL\r业主地址：CELL_ADDR\r类型:CATEGORY\rCONTENT";
+    public static String THREAD_NOTICE_DESC = "业主姓名：NAME\r联系方式：TEL\r业主地址：CELL_ADDR\r消息类型：CATEGORY\r消息内容：CONTENT";
     
     public static Map<String, String>categoryMap;
     
