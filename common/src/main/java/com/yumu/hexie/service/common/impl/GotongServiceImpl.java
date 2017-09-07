@@ -5,9 +5,11 @@
 package com.yumu.hexie.service.common.impl;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 
 import org.slf4j.Logger;
@@ -63,12 +65,14 @@ public class GotongServiceImpl implements GotongService {
     
     public static Map<String, String>categoryMap;
     
-    static{
+    @PostConstruct   
+    public void init(){
     	
+    	categoryMap = new HashMap<String, String>();
     	categoryMap.put("0", "服务需求");
     	categoryMap.put("1", "意见建议");
     	categoryMap.put("2", "报修");
-    	
+    
     }
     
     @Inject
