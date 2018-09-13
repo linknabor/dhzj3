@@ -76,6 +76,16 @@ public class User extends BaseModel{
 	private String sect_name;	//绑定房屋所在小区
 	private String cell_id;//绑定房屋的ID
 	private String cell_addr; 
+	private String officeTel;
+	
+	
+	public String getOfficeTel() {
+		return officeTel;
+	}
+
+	public void setOfficeTel(String officeTel) {
+		this.officeTel = officeTel;
+	}
 	
 	public long getCurrentAddrId() {
 		return currentAddrId;
@@ -436,26 +446,21 @@ public class User extends BaseModel{
 
 	@Override
 	public String toString() {
-		return "User [realName=" + realName + ", name=" + name + ", tel=" + tel
-				+ ", provinceId=" + provinceId + ", cityId=" + cityId
-				+ ", countyId=" + countyId + ", xiaoquId=" + xiaoquId
-				+ ", county=" + county + ", xiaoquName=" + xiaoquName
-				+ ", longitude=" + longitude + ", latitude=" + latitude
-				+ ", currentAddrId=" + currentAddrId + ", wuyeId=" + wuyeId
-				+ ", openid=" + openid + ", memo=" + memo + ", subscribe="
-				+ subscribe + ", status=" + status + ", nickname=" + nickname
-				+ ", sex=" + sex + ", age=" + age + ", city=" + city
-				+ ", country=" + country + ", province=" + province
-				+ ", language=" + language + ", headimgurl=" + headimgurl
-				+ ", subscribe_time=" + subscribe_time + ", registerDate="
-				+ registerDate + ", identityCard=" + identityCard + ", zhima="
-				+ zhima + ", lvdou=" + lvdou + ", couponCount=" + couponCount
-				+ ", bindAppId=" + bindAppId + ", bindOpenId=" + bindOpenId
-				+ ", shareCode=" + shareCode + ", newRegiste=" + newRegiste
-				+ ", total_bind=" + total_bind + ", sect_id=" + sect_id
-				+ ", sect_name=" + sect_name + ", cell_id=" + cell_id
-				+ ", cell_addr=" + cell_addr + "]";
+		return "User [realName=" + realName + ", name=" + name + ", tel=" + tel + ", provinceId=" + provinceId
+				+ ", cityId=" + cityId + ", countyId=" + countyId + ", xiaoquId=" + xiaoquId + ", county=" + county
+				+ ", xiaoquName=" + xiaoquName + ", longitude=" + longitude + ", latitude=" + latitude
+				+ ", currentAddrId=" + currentAddrId + ", wuyeId=" + wuyeId + ", openid=" + openid + ", memo=" + memo
+				+ ", subscribe=" + subscribe + ", status=" + status + ", nickname=" + nickname + ", sex=" + sex
+				+ ", age=" + age + ", city=" + city + ", country=" + country + ", province=" + province + ", language="
+				+ language + ", headimgurl=" + headimgurl + ", subscribe_time=" + subscribe_time + ", registerDate="
+				+ registerDate + ", identityCard=" + identityCard + ", zhima=" + zhima + ", lvdou=" + lvdou
+				+ ", couponCount=" + couponCount + ", bindAppId=" + bindAppId + ", bindOpenId=" + bindOpenId
+				+ ", shareCode=" + shareCode + ", newRegiste=" + newRegiste + ", total_bind=" + total_bind
+				+ ", sect_id=" + sect_id + ", sect_name=" + sect_name + ", cell_id=" + cell_id + ", cell_addr="
+				+ cell_addr + ", officeTel=" + officeTel + "]";
 	}
+
+	
 
 	
 }
