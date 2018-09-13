@@ -75,13 +75,16 @@ public class UserController extends BaseController{
 	@RequestMapping(value = "/userInfo", method = RequestMethod.GET)
 	@ResponseBody
     public BaseResult<UserInfo> userInfo(HttpSession session,@ModelAttribute(Constants.USER)User user) throws Exception {
-        user = userService.getById(user.getId());
+		log.error("进入userInfo接口");
+		user = userService.getById(user.getId());
+        log.error("userInfo的user "+ user);
         if(user != null){
         	if (StringUtil.isEmpty(user.getOpenid())) {
     			return new BaseResult<UserInfo>().failCode(BaseResult.NEED_MAIN_LOGIN); 
 			}
         	session.setAttribute(Constants.USER, user);
         	UserInfo userinfo = new UserInfo(user,operatorService.isOperator(HomeServiceConstant.SERVICE_TYPE_REPAIR,user.getId()));
+        	log.error("user.getOfficeTel = "+ user.getOfficeTel());
             return new BaseResult<UserInfo>().success(userinfo);
         } else {
             return new BaseResult<UserInfo>().success(null);

@@ -91,7 +91,7 @@ public class WuyeServiceImpl implements WuyeService {
 
 	@Override
 	@Transactional(propagation=Propagation.REQUIRED)
-	public boolean deleteHouse(User user, String userId, String houseId) {
+	public BaseResult<String> deleteHouse(User user, String userId, String houseId) {
 		
 		User currUser = userRepository.findOne(user.getId());
 		long curr_bind = currUser.getTotal_bind() - 1;
@@ -120,7 +120,7 @@ public class WuyeServiceImpl implements WuyeService {
 		if (!isSuccess) {
 			throw new BizValidateException("删除房屋失败。");
 		}
-		return isSuccess;
+		return r;
 	}
 
 	@Override
