@@ -234,9 +234,9 @@ public class WuyeServiceImpl<T> implements WuyeService {
 	}
 
 	@Override
-	public void fixUserBindedHouses(String userId) {
+	public void fixUserBindedHouses(String sign) {
 
-		if ("40002".equals(userId)) {
+		if ("dhzj3".equals(sign)) {
 			
 			long count = userRepository.count();
 			Long loops = count/1000;

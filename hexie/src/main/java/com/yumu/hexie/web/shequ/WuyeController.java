@@ -25,10 +25,10 @@ import com.yumu.hexie.common.util.StringUtil;
 import com.yumu.hexie.integration.wechat.service.TemplateMsgService;
 import com.yumu.hexie.integration.wuye.WuyeUtil;
 import com.yumu.hexie.integration.wuye.resp.BillListVO;
+import com.yumu.hexie.integration.wuye.resp.CellListVO;
 import com.yumu.hexie.integration.wuye.resp.CellVO;
 import com.yumu.hexie.integration.wuye.resp.HouseListVO;
 import com.yumu.hexie.integration.wuye.resp.PayWaterListVO;
-import com.yumu.hexie.integration.wuye.resp.CellListVO;
 import com.yumu.hexie.integration.wuye.vo.HexieHouse;
 import com.yumu.hexie.integration.wuye.vo.HexieUser;
 import com.yumu.hexie.integration.wuye.vo.PayResult;
@@ -498,10 +498,9 @@ public class WuyeController extends BaseController {
 	@SuppressWarnings("rawtypes")
 	@RequestMapping(value = "/fixUserBindHouses", method = RequestMethod.POST)
 	@ResponseBody
-	public BaseResult fixUserBindedHouses(HttpSession session) {
+	public BaseResult fixUserBindedHouses(HttpSession session, @RequestParam String sign) {
 		
-		User user = (User)session.getAttribute(Constants.USER);
-		wuyeService.fixUserBindedHouses(String.valueOf(user.getId()));
+		wuyeService.fixUserBindedHouses(sign);
 		return BaseResult.successResult("succeeded!");
 		
 	}
