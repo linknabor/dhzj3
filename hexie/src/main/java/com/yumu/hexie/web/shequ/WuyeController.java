@@ -498,7 +498,7 @@ public class WuyeController extends BaseController {
 	@SuppressWarnings("rawtypes")
 	@RequestMapping(value = "/fixUserBindHouses", method = RequestMethod.POST)
 	@ResponseBody
-	public BaseResult fixUserBindedHouses(HttpSession session, @RequestParam String sign) {
+	public BaseResult fixUserBindedHouses(@RequestParam String sign) {
 		
 		wuyeService.fixUserBindedHouses(sign);
 		return BaseResult.successResult("succeeded!");
