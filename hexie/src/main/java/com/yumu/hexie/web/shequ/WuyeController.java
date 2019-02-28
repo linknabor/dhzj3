@@ -25,10 +25,10 @@ import com.yumu.hexie.common.util.StringUtil;
 import com.yumu.hexie.integration.wechat.service.TemplateMsgService;
 import com.yumu.hexie.integration.wuye.WuyeUtil;
 import com.yumu.hexie.integration.wuye.resp.BillListVO;
+import com.yumu.hexie.integration.wuye.resp.CellListVO;
 import com.yumu.hexie.integration.wuye.resp.CellVO;
 import com.yumu.hexie.integration.wuye.resp.HouseListVO;
 import com.yumu.hexie.integration.wuye.resp.PayWaterListVO;
-import com.yumu.hexie.integration.wuye.resp.CellListVO;
 import com.yumu.hexie.integration.wuye.vo.HexieHouse;
 import com.yumu.hexie.integration.wuye.vo.HexieUser;
 import com.yumu.hexie.integration.wuye.vo.PayResult;
@@ -120,12 +120,6 @@ public class WuyeController extends BaseController {
 		}
 		com.yumu.hexie.integration.wuye.resp.BaseResult<String> r = wuyeService.deleteHouse(user, user.getWuyeId(), houseId);
 		if ((boolean)r.isSuccess()) {
-			//添加电话到user表
-			log.error("这里是删除房子后保存的电话");
-			log.error("保存电话到user表==》开始");
-			user.setOfficeTel(r.getData());
-			userService.save(user);
-			log.error("保存电话到user表==》成功");
 			return BaseResult.successResult("删除房子成功！");
 		} else {
 			return BaseResult.fail("删除房子失败！");
@@ -144,20 +138,14 @@ public class WuyeController extends BaseController {
 		return BaseResult.successResult(wuyeService.getHouse(user.getWuyeId(),stmtId, house_id));
 	}
 
+	@SuppressWarnings("unchecked")
 	@RequestMapping(value = "/addhexiehouse", method = RequestMethod.POST)
 	@ResponseBody
 	public BaseResult<HexieHouse> addhouses(@ModelAttribute(Constants.USER)User user,
 			@RequestParam(required=false) String stmtId, @RequestParam(required=false) String houseId, @RequestBody HexieHouse house) throws Exception {
 		HexieUser u = wuyeService.bindHouse(user, stmtId, house);
-		log.error("HexieUser u = "+u);
 		if(u != null) {
 			pointService.addZhima(user, 1000, "zhima-house-"+user.getId()+"-"+houseId);
-			//添加电话到user表
-			log.error("这里是添加房子后保存的电话");
-			log.error("保存电话到user表==》开始");
-			user.setOfficeTel(u.getOffice_tel());
-			userService.save(user);
-			log.error("保存电话到user表==》成功");
 		}
 		
 		return BaseResult.successResult(u);
@@ -502,4 +490,20 @@ public class WuyeController extends BaseController {
 	    return BaseResult.successResult("succeeded");
 		
 	}
+	
+	/**
+	 * 修正已绑房屋用户正确的绑定房屋数和小区、房屋地址
+	 * @return
+	 */
+	@SuppressWarnings("rawtypes")
+	@RequestMapping(value = "/fixUserBindHouses", method = RequestMethod.POST)
+	@ResponseBody
+	public BaseResult fixUserBindedHouses(@RequestParam String sign) {
+		
+		wuyeService.fixUserBindedHouses(sign);
+		return BaseResult.successResult("succeeded!");
+		
+	}
+	
+	
 }
