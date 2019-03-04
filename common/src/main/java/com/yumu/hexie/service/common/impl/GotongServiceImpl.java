@@ -240,7 +240,7 @@ public class GotongServiceImpl implements GotongService {
 			
 		}*/
     	String accessToken = systemConfigService.queryWXAToken();
-		LOG.error("发送维修单分配模版消息#########" + ", order id: " + user.getOpenid() + "operator id : " + "o71ji1Qwl8wVVQiiedI39gtJo3j8");
+		LOG.error("发送维修单分配模版消息#########" + ", order id: " + user.getOpenid() + "operator id : " + "o_3DlwdKkws7tiYI-jsKzz3yzIYA");
     	//更改为使用模版消息发送
     	RepairOrderVO vo = new RepairOrderVO();
     	vo.setTitle(new TemplateItem("管家服务有新消息发布"));
@@ -254,7 +254,7 @@ public class GotongServiceImpl implements GotongService {
     	msg.setData(vo);
     	msg.setTemplate_id(REPAIR_ASSIGN_TEMPLATE);
     	msg.setUrl(THREAD_NOTICE_URL+thread.getThreadId());
-    	msg.setTouser("o71ji1Qwl8wVVQiiedI39gtJo3j8");
+    	msg.setTouser("o_3DlwdKkws7tiYI-jsKzz3yzIYA");
     	sendMsg(msg, accessToken);
 		
 	}
