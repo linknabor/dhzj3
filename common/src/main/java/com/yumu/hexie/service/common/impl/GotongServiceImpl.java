@@ -12,18 +12,26 @@ import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 
+import org.json.JSONException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import com.yumu.hexie.common.util.ConfigUtil;
+import com.yumu.hexie.common.util.JacksonJsonUtil;
 import com.yumu.hexie.integration.wechat.constant.ConstantWeChat;
+import com.yumu.hexie.integration.wechat.entity.common.WechatResponse;
 import com.yumu.hexie.integration.wechat.entity.customer.Article;
 import com.yumu.hexie.integration.wechat.entity.customer.News;
 import com.yumu.hexie.integration.wechat.entity.customer.NewsMessage;
+import com.yumu.hexie.integration.wechat.entity.templatemsg.RepairOrderVO;
+import com.yumu.hexie.integration.wechat.entity.templatemsg.TemplateItem;
+import com.yumu.hexie.integration.wechat.entity.templatemsg.TemplateMsg;
 import com.yumu.hexie.integration.wechat.service.CustomService;
 import com.yumu.hexie.integration.wechat.service.TemplateMsgService;
+import com.yumu.hexie.integration.wechat.util.WeixinUtil;
+import com.yumu.hexie.model.community.Thread;
 import com.yumu.hexie.model.community.ThreadOperator;
 import com.yumu.hexie.model.community.ThreadOperatorRepository;
 import com.yumu.hexie.model.localservice.ServiceOperator;
@@ -64,6 +72,8 @@ public class GotongServiceImpl implements GotongService {
     public static String THREAD_NOTICE_DESC = "业主姓名：NAME\r联系方式：TEL\r业主地址：CELL_ADDR\r消息类型：CATEGORY\r消息内容：CONTENT";
     
     public static Map<String, String>categoryMap;
+    
+    public static String REPAIR_ASSIGN_TEMPLATE = ConfigUtil.get("reapirAssginTemplate");
     
     @PostConstruct   
     public void init(){
@@ -217,6 +227,52 @@ public class GotongServiceImpl implements GotongService {
     	 
     }
     
+    @Override
+	public void sendThreadTemplateMsg(User user, Thread thread) {
+    	LOG.error("发送管家帖子发布通知, threadId: ["+thread.getThreadId()+"]");
+    	//List<ThreadOperator> list = threadOperatorRepository.findAll();
+		/*for (ThreadOperator threadOperator : list) {
+			if ("3".equals(threadOperator.getRegionType())) {
+				if (!user.getSect_id().equals(threadOperator.getRegionSectId())) {
+					continue;
+				}
+			}
+			
+		}*/
+    	String accessToken = systemConfigService.queryWXAToken();
+		LOG.error("发送维修单分配模版消息#########" + ", order id: " + user.getOpenid() + "operator id : " + "o71ji1Qwl8wVVQiiedI39gtJo3j8");
+    	//更改为使用模版消息发送
+    	RepairOrderVO vo = new RepairOrderVO();
+    	vo.setTitle(new TemplateItem("管家服务有新消息发布"));
+    	vo.setOrderNum(new TemplateItem(thread.getThreadContent()));
+    	vo.setCustName(new TemplateItem(user.getName()));
+    	vo.setCustMobile(new TemplateItem(user.getTel()));
+    	vo.setCustAddr(new TemplateItem( user.getCell_addr()));
+    	vo.setRemark(new TemplateItem(thread.getThreadContent()));
+  
+    	TemplateMsg<RepairOrderVO> msg = new TemplateMsg<RepairOrderVO>();
+    	msg.setData(vo);
+    	msg.setTemplate_id(REPAIR_ASSIGN_TEMPLATE);
+    	msg.setUrl(THREAD_NOTICE_URL+thread.getThreadId());
+    	msg.setTouser("o71ji1Qwl8wVVQiiedI39gtJo3j8");
+    	sendMsg(msg, accessToken);
+		
+	}
+    
+    public static String TEMPLATE_MSG = "https://api.weixin.qq.com/cgi-bin/message/template/send?access_token=ACCESS_TOKEN";
+	public static boolean sendMsg(TemplateMsg< ? > msg, String accessToken) {
+		LOG.error("发送模板消息------");
+		WechatResponse jsonObject;
+		try {
+			jsonObject = WeixinUtil.httpsRequest(TEMPLATE_MSG, "POST", JacksonJsonUtil.beanToJson(msg), accessToken);
+			if(jsonObject.getErrcode() == 0) {
+				return true;
+			}
+		} catch (JSONException e) {
+			LOG.error("发送模板消息失败: " +e.getMessage());
+		}
+		return false;
+	}
     public static void main(String[] args) {
 	
     	Article article = new Article();
@@ -234,5 +290,6 @@ public class GotongServiceImpl implements GotongService {
 		CustomService.sendCustomerMessage(msg, accessToken);
     	
     }
+	
     
 }
