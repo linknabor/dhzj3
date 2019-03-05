@@ -230,31 +230,6 @@ public class GotongServiceImpl implements GotongService {
     
     @Override
 	public void sendThreadTemplateMsg(User user, Thread thread) {
-    	/*LOG.error("发送管家帖子发布通知, threadId: ["+thread.getThreadId()+"]");
-     	String accessToken = systemConfigService.queryWXAToken();
-    	List<ThreadOperator> list = threadOperatorRepository.findAll();
-		for (ThreadOperator threadOperator : list) {
-			if ("3".equals(threadOperator.getRegionType())) {
-				if (!user.getSect_id().equals(threadOperator.getRegionSectId())) {
-					continue;
-				}
-			}
-			LOG.error("发送维修单分配模版消息#########" + ", order id: " + user.getOpenid() + "operator id : " + threadOperator.getOpenId());
-	    	//更改为使用模版消息发送
-	    	ThreadTemplateVo vo = new ThreadTemplateVo();
-	    	vo.setContent(new TemplateItem(thread.getThreadContent()));
-	    	vo.setCustName(new TemplateItem(user.getName()));
-	    	vo.setCustMobile(new TemplateItem(user.getTel()));
-	    	vo.setCustAddr(new TemplateItem( user.getCell_addr()));
-	    	vo.setMsgType(new TemplateItem(thread.getThreadCategory()));
-	    	
-	    	TemplateMsg<ThreadTemplateVo> msg = new TemplateMsg<ThreadTemplateVo>();
-	    	msg.setData(vo);
-	    	msg.setTemplate_id(REPAIR_ASSIGN_TEMPLATE);
-	    	msg.setUrl(THREAD_NOTICE_URL+thread.getThreadId());
-	    	msg.setTouser(threadOperator.getOpenId());
-	    	sendMsg(msg, accessToken);
-		}*/
     	LOG.error("发送管家帖子发布通知, threadId: ["+thread.getThreadId()+"]");
      	String accessToken = systemConfigService.queryWXAToken();
     	List<ThreadOperator> list = threadOperatorRepository.findAll();
@@ -267,12 +242,13 @@ public class GotongServiceImpl implements GotongService {
 			LOG.error("发送维修单分配模版消息#########" + ", order id: " + user.getOpenid() + "operator id : " + threadOperator.getOpenId());
 	    	//更改为使用模版消息发送
 			RepairOrderVO vo = new RepairOrderVO();
-			vo.setTitle(new TemplateItem("管家服务有新消息发布"));
-			vo.setRemark(new TemplateItem(thread.getThreadContent()));
-	    	vo.setOrderNum(new TemplateItem(thread.getThreadCategory()));
+			vo.setTitle(new TemplateItem("您好，派单成功，请尽快前往。"));
+			vo.setRemark(new TemplateItem("维修内容："+thread.getThreadContent()));
+	    	vo.setOrderNum(new TemplateItem(String.valueOf(thread.getThreadId())));
 	    	vo.setCustName(new TemplateItem(user.getName()));
 	    	vo.setCustMobile(new TemplateItem(user.getTel()));
 	    	vo.setCustAddr(new TemplateItem( user.getCell_addr()));
+	    	
 	    	
 	    	TemplateMsg<RepairOrderVO> msg = new TemplateMsg<RepairOrderVO>();
 	    	msg.setData(vo);
