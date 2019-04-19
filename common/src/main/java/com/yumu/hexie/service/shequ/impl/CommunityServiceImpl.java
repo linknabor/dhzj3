@@ -86,7 +86,10 @@ public class CommunityServiceImpl implements CommunityService {
 		thread.setStickPriority("0");	//默认优先级0，为最低
 		threadRepository.save(thread);
 		
-		gotongService.sendThreadPubNotify(user, thread);
+		//gotongService.sendThreadPubNotify(user, thread);
+		
+		//更改为发送模板消息
+		gotongService.sendThreadTemplateMsg(user, thread);
 		
 		return thread;
 	}
