@@ -168,7 +168,17 @@ public class WuyeServiceImpl<T> implements WuyeService {
 	@Override
 	public PaymentInfo getBillDetail(String userId, String stmtId,
 			String anotherbillIds) {
-		return WuyeUtil.getBillDetail(userId, stmtId, anotherbillIds).getData();
+		BaseResult<PaymentInfo> r=WuyeUtil.getBillDetail(userId, stmtId, anotherbillIds);
+		if ("03".equals(r.getResult())){
+			throw new BizValidateException("账单公司未配置支付参数,暂无法缴费！");
+		}
+		if ("02".equals(r.getResult())) {
+			throw new BizValidateException("账单小区未配置支付参数,暂无法缴费！");
+		}
+		if ("01".equals(r.getResult())) {
+			throw new BizValidateException("账单小区未开通线上支付,暂无法缴费！");
+		}
+		return r.getData();
 	}
 
 	@Override
