@@ -219,13 +219,13 @@ public class WuyeController extends BaseController {
 			@RequestParam(required=false) String billId,@RequestParam(required=false) String stmtId) {
 		com.yumu.hexie.integration.wuye.resp.BaseResult<PaymentInfo> r=WuyeUtil.getBillDetail(user.getWuyeId(), stmtId, billId);
 		if ("03".equals(r.getResult())){
-			throw new BizValidateException("账单公司未配置支付参数,暂无法缴费！");
+			return BaseResult.fail("账单公司未配置支付参数,暂无法缴费！");
 		}
 		if ("02".equals(r.getResult())) {
-			throw new BizValidateException("账单小区未配置支付参数,暂无法缴费！");
+			return BaseResult.fail("账单小区未配置支付参数,暂无法缴费！");
 		}
 		if ("01".equals(r.getResult())) {
-			throw new BizValidateException("账单小区未开通线上支付,暂无法缴费！");
+			return BaseResult.fail("账单小区未开通线上支付,暂无法缴费！");
 		}
 		return BaseResult.successResult(r.getData());
 	}
