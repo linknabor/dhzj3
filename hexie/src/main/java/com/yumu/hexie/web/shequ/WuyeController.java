@@ -42,7 +42,6 @@ import com.yumu.hexie.model.user.User;
 import com.yumu.hexie.model.user.UserRepository;
 import com.yumu.hexie.service.common.SmsService;
 import com.yumu.hexie.service.common.SystemConfigService;
-import com.yumu.hexie.service.exception.BizValidateException;
 import com.yumu.hexie.service.shequ.WuyeService;
 import com.yumu.hexie.service.user.CouponService;
 import com.yumu.hexie.service.user.PointService;
@@ -217,17 +216,7 @@ public class WuyeController extends BaseController {
 	@ResponseBody
 	public BaseResult<PaymentInfo> getBillDetail(@ModelAttribute(Constants.USER)User user,
 			@RequestParam(required=false) String billId,@RequestParam(required=false) String stmtId) {
-		com.yumu.hexie.integration.wuye.resp.BaseResult<PaymentInfo> r=WuyeUtil.getBillDetail(user.getWuyeId(), stmtId, billId);
-		if ("03".equals(r.getResult())){
-			return BaseResult.fail("账单公司未配置支付参数,暂无法缴费！");
-		}
-		if ("02".equals(r.getResult())) {
-			return BaseResult.fail("账单小区未配置支付参数,暂无法缴费！");
-		}
-		if ("01".equals(r.getResult())) {
-			return BaseResult.fail("账单小区未开通线上支付,暂无法缴费！");
-		}
-		return BaseResult.successResult(r.getData());
+		return BaseResult.successResult(WuyeUtil.getBillDetail(user.getWuyeId(), stmtId, billId).getData());
 	}
 	
 	//stmtId在快捷支付的时候会用到
