@@ -504,6 +504,4 @@ public class WuyeController extends BaseController {
 		return BaseResult.successResult("succeeded!");
 		
 	}
-	
-	
 }
