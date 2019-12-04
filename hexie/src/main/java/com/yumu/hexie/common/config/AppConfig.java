@@ -81,7 +81,7 @@ public class AppConfig {
     @Bean
     public EmbeddedServletContainerFactory EmbeddedServletContainerFactory(){
         TomcatEmbeddedServletContainerFactory factory = new TomcatEmbeddedServletContainerFactory();
-        factory.setPort(80);
+        factory.setPort(90);
         factory.addAdditionalTomcatConnectors(createSslConnector());
         return factory;
     }
@@ -98,7 +98,7 @@ public class AppConfig {
             connector.setScheme("https");
             protocol.setSSLEnabled(true);
             connector.setSecure(true);
-            connector.setPort(8443);
+            connector.setPort(8490);
             protocol.setKeystoreFile(truststore.getAbsolutePath());
             protocol.setKeystorePass("hongzhitech20130110");
 //            protocol.setKeyAlias("springboot");
