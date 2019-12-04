@@ -77,6 +77,12 @@ public class UserController extends BaseController{
     public BaseResult<UserInfo> userInfo(HttpSession session,@ModelAttribute(Constants.USER)User user) throws Exception {
 		user = userService.getById(user.getId());
         if(user != null){
+   		 	//绑定物业信息
+            if(StringUtil.isEmpty(user.getWuyeId()) ){
+            	HexieUser r = WuyeUtil.userLogin(user.getOpenid()).getData();
+        		user.setWuyeId(r.getUser_id());
+        		user = userService.save(user);
+            }
         	if (StringUtil.isEmpty(user.getOpenid())) {
     			return new BaseResult<UserInfo>().failCode(BaseResult.NEED_MAIN_LOGIN); 
 			}
