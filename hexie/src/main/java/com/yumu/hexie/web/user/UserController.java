@@ -79,7 +79,6 @@ public class UserController extends BaseController{
     public BaseResult<UserInfo> userInfo(HttpSession session,@ModelAttribute(Constants.USER)User user) throws Exception {
 		user = userService.getById(user.getId());
         if(user != null){
-        	userService.bindWithWuye(user);
         	if (StringUtil.isEmpty(user.getOpenid())) {
     			return new BaseResult<UserInfo>().failCode(BaseResult.NEED_MAIN_LOGIN); 
 			}
