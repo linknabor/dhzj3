@@ -22,4 +22,5 @@ public interface UserService {
     public User bindPhone(User user,String phone);
 	
 	public User queryByShareCode(String code);
+	User bindWithWuye(User userAccount);
 }
