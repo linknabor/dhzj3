@@ -6,6 +6,7 @@ import javax.inject.Inject;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
@@ -29,7 +30,7 @@ public class ShareServiceImpl implements ShareService {
 	private RedisRepository redisRepository;
 	@Inject
 	private OrderShareRecordRepository orderShareRecordRepository;
-	@Inject
+	@Autowired
 	private UserService userService;
 	@Override
 	public void access(User user, ShareAccessRecord record) {
